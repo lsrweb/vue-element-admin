@@ -4,17 +4,17 @@
  * @param {string} cFormat
  * @returns {string | null}
  */
-export function parseTime(time, cFormat){
-  if(arguments.length === 0 || !time){
+export function parseTime(time, cFormat) {
+  if (arguments.length === 0 || !time) {
     return null;
   }
   const format = cFormat || "{y}-{m}-{d} {h}:{i}:{s}";
   let date;
-  if(typeof time === "object"){
+  if (typeof time === "object") {
     date = time;
   } else {
-    if(typeof time === "string"){
-      if(/^[0-9]+$/.test(time)){
+    if (typeof time === "string") {
+      if (/^[0-9]+$/.test(time)) {
         // support "1548221490638"
         time = parseInt(time);
       } else {
@@ -24,24 +24,24 @@ export function parseTime(time, cFormat){
       }
     }
 
-    if(typeof time === "number" && time.toString().length === 10){
+    if (typeof time === "number" && time.toString().length === 10) {
       time = time * 1000;
     }
     date = new Date(time);
   }
   const formatObj = {
-    y:date.getFullYear(),
-    m:date.getMonth() + 1,
-    d:date.getDate(),
-    h:date.getHours(),
-    i:date.getMinutes(),
-    s:date.getSeconds(),
-    a:date.getDay()
+    y: date.getFullYear(),
+    m: date.getMonth() + 1,
+    d: date.getDate(),
+    h: date.getHours(),
+    i: date.getMinutes(),
+    s: date.getSeconds(),
+    a: date.getDay(),
   };
   const time_str = format.replace(/{([ymdhisa])+}/g, (result, key) => {
     const value = formatObj[key];
     // Note: getDay() returns 0 on Sunday
-    if(key === "a"){
+    if (key === "a") {
       return ["日", "一", "二", "三", "四", "五", "六"][value];
     }
     return value.toString().padStart(2, "0");
@@ -54,8 +54,8 @@ export function parseTime(time, cFormat){
  * @param {string} option
  * @returns {string}
  */
-export function formatTime(time, option){
-  if(("" + time).length === 10){
+export function formatTime(time, option) {
+  if (("" + time).length === 10) {
     time = parseInt(time) * 1000;
   } else {
     time = +time;
@@ -65,17 +65,17 @@ export function formatTime(time, option){
 
   const diff = (now - d) / 1000;
 
-  if(diff < 30){
+  if (diff < 30) {
     return "刚刚";
-  } else if(diff < 3600){
+  } else if (diff < 3600) {
     // less 1 hour
     return Math.ceil(diff / 60) + "分钟前";
-  } else if(diff < 3600 * 24){
+  } else if (diff < 3600 * 24) {
     return Math.ceil(diff / 3600) + "小时前";
-  } else if(diff < 3600 * 24 * 2){
+  } else if (diff < 3600 * 24 * 2) {
     return "1天前";
   }
-  if(option){
+  if (option) {
     return parseTime(time, option);
   } else {
     return (
@@ -92,35 +92,35 @@ export function formatTime(time, option){
   }
 }
 
-export function parseSpeDate(date){
-  if(!date) return;
+export function parseSpeDate(date) {
+  if (!date) return;
   let getFullYear = new Date(date).getFullYear();
   let getFullMonth = new Date(date).getMonth() + 1;
   let getDate = new Date(date).getDate();
 
-  if(getFullMonth < 10){
-    getFullMonth = `0${ getFullMonth }`;
+  if (getFullMonth < 10) {
+    getFullMonth = `0${getFullMonth}`;
   }
-  if(getDate < 10){
-    getDate = `0${ getDate }`;
+  if (getDate < 10) {
+    getDate = `0${getDate}`;
   }
-  return `${ getFullYear }-${ getFullMonth }-${ getDate }`;
+  return `${getFullYear}-${getFullMonth}-${getDate}`;
 }
 
 /**
  * @param {string} 参数解析
  * @returns {Object}
  */
-export function param2Obj(url){
+export function param2Obj(url) {
   const search = decodeURIComponent(url.split("?")[1]).replace(/\+/g, " ");
-  if(!search){
+  if (!search) {
     return {};
   }
   const obj = {};
   const searchArr = search.split("&");
   searchArr.forEach((v) => {
     const index = v.indexOf("=");
-    if(index !== -1){
+    if (index !== -1) {
       const name = v.substring(0, index);
       const val = v.substring(index + 1, v.length);
       obj[name] = val;

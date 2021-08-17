@@ -45,22 +45,22 @@ import Breadcrumb from "@/components/Breadcrumb";
 import Hamburger from "@/components/Hamburger";
 
 export default {
-  components:{
+  components: {
     Breadcrumb,
-    Hamburger
+    Hamburger,
   },
-  computed:{
-    ...mapGetters(["sidebar", "avatar"])
+  computed: {
+    ...mapGetters(["sidebar", "avatar"]),
   },
-  methods:{
-    toggleSideBar(){
+  methods: {
+    toggleSideBar() {
       this.$store.dispatch("app/toggleSideBar");
     },
-    async logout(){
+    async logout() {
       await this.$store.dispatch("user/logout");
-      this.$router.push(`/login?redirect=${ this.$route.fullPath }`);
-    }
-  }
+      this.$router.push(`/login?redirect=${this.$route.fullPath}`);
+    },
+  },
 };
 </script>
 

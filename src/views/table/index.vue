@@ -36,7 +36,7 @@
       >
         <template slot-scope="scope">
           <el-tag :type="scope.row.status | statusFilter"
-          >{{ scope.row.status }}
+            >{{ scope.row.status }}
           </el-tag>
         </template>
       </el-table-column>
@@ -59,33 +59,33 @@
 import { getList } from "@/api/table";
 
 export default {
-  filters:{
-    statusFilter(status){
+  filters: {
+    statusFilter(status) {
       const statusMap = {
-        published:"success",
-        draft:"gray",
-        deleted:"danger"
+        published: "success",
+        draft: "gray",
+        deleted: "danger",
       };
       return statusMap[status];
-    }
+    },
   },
-  data(){
+  data() {
     return {
-      list:null,
-      listLoading:true
+      list: null,
+      listLoading: true,
     };
   },
-  created(){
+  created() {
     this.fetchData();
   },
-  methods:{
-    fetchData(){
+  methods: {
+    fetchData() {
       this.listLoading = true;
       getList().then((response) => {
         this.list = response.data.items;
         this.listLoading = false;
       });
-    }
-  }
+    },
+  },
 };
 </script>

@@ -30,36 +30,37 @@ import SidebarItem from "./SidebarItem";
 import variables from "@/styles/variables.scss";
 
 export default {
-  components:{
+  components: {
     SidebarItem,
-    Logo
+    Logo,
   },
-  computed:{
+  computed: {
     ...mapGetters(["sidebar"]),
-    routes(){
-      if(!this.$store.state.settings.openDyRouter){
+    // eslint-disable-next-line vue/return-in-computed-property
+    routes() {
+      if (!this.$store.state.settings.openDyRouter) {
         return this.$router.options.routes;
-      } else {
+        // eslint-disable-next-line no-empty
       }
     },
-    activeMenu(){
+    activeMenu() {
       const route = this.$route;
       const { meta, path } = route;
       // if set path, the sidebar will highlight the path you set
-      if(meta.activeMenu){
+      if (meta.activeMenu) {
         return meta.activeMenu;
       }
       return path;
     },
-    showLogo(){
+    showLogo() {
       return this.$store.state.settings.sidebarLogo;
     },
-    variables(){
+    variables() {
       return variables;
     },
-    isCollapse(){
+    isCollapse() {
       return !this.sidebar.opened;
-    }
-  }
+    },
+  },
 };
 </script>

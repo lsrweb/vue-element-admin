@@ -20,39 +20,39 @@ import { AppMain, Navbar, Sidebar } from "./components";
 import ResizeMixin from "./mixin/ResizeHandler";
 
 export default {
-  name:"Layout",
-  components:{
+  name: "Layout",
+  components: {
     Navbar,
     Sidebar,
-    AppMain
+    AppMain,
   },
-  mixins:[ResizeMixin],
-  computed:{
-    sidebar(){
+  mixins: [ResizeMixin],
+  computed: {
+    sidebar() {
       return this.$store.state.app.sidebar;
     },
-    device(){
+    device() {
       return this.$store.state.app.device;
     },
-    fixedHeader(){
+    fixedHeader() {
       return this.$store.state.settings.fixedHeader;
     },
-    classObj(){
+    classObj() {
       return {
-        hideSidebar:!this.sidebar.opened,
-        openSidebar:this.sidebar.opened,
-        withoutAnimation:this.sidebar.withoutAnimation,
-        mobile:this.device === "mobile"
+        hideSidebar: !this.sidebar.opened,
+        openSidebar: this.sidebar.opened,
+        withoutAnimation: this.sidebar.withoutAnimation,
+        mobile: this.device === "mobile",
       };
-    }
+    },
   },
-  methods:{
-    handleClickOutside(){
+  methods: {
+    handleClickOutside() {
       this.$store.dispatch("app/closeSideBar", {
-        withoutAnimation:false
+        withoutAnimation: false,
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

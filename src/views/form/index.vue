@@ -59,31 +59,31 @@
 
 <script>
 export default {
-  data(){
+  data() {
     return {
-      form:{
-        name:"",
-        region:"",
-        date1:"",
-        date2:"",
-        delivery:false,
-        type:[],
-        resource:"",
-        desc:""
-      }
+      form: {
+        name: "",
+        region: "",
+        date1: "",
+        date2: "",
+        delivery: false,
+        type: [],
+        resource: "",
+        desc: "",
+      },
     };
   },
-  methods:{
-    onSubmit(){
+  methods: {
+    onSubmit() {
       this.$message("submit!");
     },
-    onCancel(){
+    onCancel() {
       this.$message({
-        message:"cancel!",
-        type:"warning"
+        message: "cancel!",
+        type: "warning",
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

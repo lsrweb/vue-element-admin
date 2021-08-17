@@ -8,36 +8,36 @@
 import { isExternal } from "@/utils/validate";
 
 export default {
-  props:{
-    to:{
-      type:String,
-      required:true
-    }
+  props: {
+    to: {
+      type: String,
+      required: true,
+    },
   },
-  computed:{
-    isExternal(){
+  computed: {
+    isExternal() {
       return isExternal(this.to);
     },
-    type(){
-      if(this.isExternal){
+    type() {
+      if (this.isExternal) {
         return "a";
       }
       return "router-link";
-    }
+    },
   },
-  methods:{
-    linkProps(to){
-      if(this.isExternal){
+  methods: {
+    linkProps(to) {
+      if (this.isExternal) {
         return {
-          href:to,
-          target:"_blank",
-          rel:"noopener"
+          href: to,
+          target: "_blank",
+          rel: "noopener",
         };
       }
       return {
-        to:to
+        to: to,
       };
-    }
-  }
+    },
+  },
 };
 </script>

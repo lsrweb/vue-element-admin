@@ -54,9 +54,8 @@
         style="width: 100%; margin-bottom: 30px"
         type="primary"
         @click.native.prevent="handleLogin"
-      >Login
-      </el-button
-      >
+        >Login
+      </el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
@@ -70,59 +69,59 @@
 import { validUsername } from "@/utils/validate";
 
 export default {
-  name:"Login",
-  data(){
+  name: "Login",
+  data() {
     const validateUsername = (rule, value, callback) => {
-      if(!validUsername(value)){
+      if (!validUsername(value)) {
         callback(new Error("Please enter the correct user name"));
       } else {
         callback();
       }
     };
     const validatePassword = (rule, value, callback) => {
-      if(value.length < 6){
+      if (value.length < 6) {
         callback(new Error("The password can not be less than 6 digits"));
       } else {
         callback();
       }
     };
     return {
-      loginForm:{
-        username:"admin",
-        password:"111111"
+      loginForm: {
+        username: "admin",
+        password: "111111",
       },
-      loginRules:{
-        username:[
+      loginRules: {
+        username: [
           {
-            required:true,
-            trigger:"blur",
-            validator:validateUsername
-          }
+            required: true,
+            trigger: "blur",
+            validator: validateUsername,
+          },
         ],
-        password:[
+        password: [
           {
-            required:true,
-            trigger:"blur",
-            validator:validatePassword
-          }
-        ]
+            required: true,
+            trigger: "blur",
+            validator: validatePassword,
+          },
+        ],
       },
-      loading:false,
-      passwordType:"password",
-      redirect:undefined
+      loading: false,
+      passwordType: "password",
+      redirect: undefined,
     };
   },
-  watch:{
-    $route:{
-      handler:function(route){
+  watch: {
+    $route: {
+      handler: function (route) {
         this.redirect = route.query && route.query.redirect;
       },
-      immediate:true
-    }
+      immediate: true,
+    },
   },
-  methods:{
-    showPwd(){
-      if(this.passwordType === "password"){
+  methods: {
+    showPwd() {
+      if (this.passwordType === "password") {
         this.passwordType = "";
       } else {
         this.passwordType = "password";
@@ -131,15 +130,15 @@ export default {
         this.$refs.password.focus();
       });
     },
-    handleLogin(){
+    handleLogin() {
       this.$refs.loginForm.validate((valid) => {
-        if(valid){
+        if (valid) {
           this.loading = true;
           this.$store
             .dispatch("user/login", this.loginForm)
             .then(() => {
               this.$router.push({
-                path:this.redirect || "/"
+                path: this.redirect || "/",
               });
               this.loading = false;
             })
@@ -151,8 +150,8 @@ export default {
           return false;
         }
       });
-    }
-  }
+    },
+  },
 };
 </script>
 

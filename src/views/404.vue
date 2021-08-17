@@ -31,7 +31,7 @@
             href="https://wallstreetcn.com"
             style="color: #20a0ff"
             target="_blank"
-          >wallstreetcn</a
+            >wallstreetcn</a
           >
         </div>
         <div class="bullshit__headline">{{ message }}</div>
@@ -47,12 +47,12 @@
 
 <script>
 export default {
-  name:"Page404",
-  computed:{
-    message(){
+  name: "Page404",
+  computed: {
+    message() {
       return "The webmaster said that you can not enter this page...";
-    }
-  }
+    },
+  },
 };
 </script>
 

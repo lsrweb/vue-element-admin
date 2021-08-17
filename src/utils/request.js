@@ -5,15 +5,15 @@ import { getToken } from "@/utils/auth";
 
 // create an axios instance
 const service = axios.create({
-  baseURL:process.env.VUE_APP_BASE_API,
+  baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: true,
-  timeout:5000
+  timeout: 5000,
 });
 
 // request interceptor
 service.interceptors.request.use(
   (config) => {
-    if(store.getters.token){
+    if (store.getters.token) {
       config.headers["X-Token"] = getToken();
     }
     return config;
@@ -28,21 +28,21 @@ service.interceptors.response.use(
   (response) => {
     const res = response.data;
     console.log(res);
-    if(res.code != 200){
+    if (res.code != 200) {
       Message({
-        message:res.message || "Error",
-        type:"error",
-        duration:5 * 1000
+        message: res.message || "Error",
+        type: "error",
+        duration: 5 * 1000,
       });
 
-      if(res.code === 50008 || res.code === 50012 || res.code === 50014){
+      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
         MessageBox.confirm(
           "You have been logged out, you can cancel to stay on this page, or log in again",
           "Confirm logout",
           {
-            confirmButtonText:"Re-Login",
-            cancelButtonText:"Cancel",
-            type:"warning"
+            confirmButtonText: "Re-Login",
+            cancelButtonText: "Cancel",
+            type: "warning",
           }
         ).then(() => {
           store.dispatch("user/resetToken").then(() => {
@@ -58,9 +58,9 @@ service.interceptors.response.use(
   (error) => {
     console.log("err" + error); // for debug
     Message({
-      message:error.message,
-      type:"error",
-      duration:5 * 1000
+      message: error.message,
+      type: "error",
+      duration: 5 * 1000,
     });
     return Promise.reject(error);
   }

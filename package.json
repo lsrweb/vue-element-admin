@@ -6,7 +6,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "svgo": "svgo -f src/icons/svg --config=src/icons/svgo.yml",
-    "lint": "eslint --ext .js,.vue src"
+    "lint": "eslint --ext .js,.vue src --fix"
   },
   "dependencies": {
     "core-js": "^3.6.5",
