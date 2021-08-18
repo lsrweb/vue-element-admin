@@ -2,43 +2,19 @@
   <div class="wscn-http404-container">
     <div class="wscn-http404">
       <div class="pic-404">
-        <img
-          alt="404"
-          class="pic-404__parent"
-          src="@/assets/404_images/404.png"
-        />
-        <img
-          alt="404"
-          class="pic-404__child left"
-          src="@/assets/404_images/404_cloud.png"
-        />
-        <img
-          alt="404"
-          class="pic-404__child mid"
-          src="@/assets/404_images/404_cloud.png"
-        />
-        <img
-          alt="404"
-          class="pic-404__child right"
-          src="@/assets/404_images/404_cloud.png"
-        />
+        <img alt="404" class="pic-404__parent" src="@/assets/404_images/404.png" />
+        <img alt="404" class="pic-404__child left" src="@/assets/404_images/404_cloud.png" />
+        <img alt="404" class="pic-404__child mid" src="@/assets/404_images/404_cloud.png" />
+        <img alt="404" class="pic-404__child right" src="@/assets/404_images/404_cloud.png" />
       </div>
       <div class="bullshit">
         <div class="bullshit__oops">OOPS!</div>
         <div class="bullshit__info">
           All rights reserved
-          <a
-            href="https://wallstreetcn.com"
-            style="color: #20a0ff"
-            target="_blank"
-            >wallstreetcn</a
-          >
+          <a href="https://wallstreetcn.com" style="color: #20a0ff" target="_blank">wallstreetcn</a>
         </div>
         <div class="bullshit__headline">{{ message }}</div>
-        <div class="bullshit__info">
-          Please check that the URL you entered is correct, or click the button
-          below to return to the homepage.
-        </div>
+        <div class="bullshit__info">Please check that the URL you entered is correct, or click the button below to return to the homepage.</div>
         <a class="bullshit__return-home" href="">Back to home</a>
       </div>
     </div>

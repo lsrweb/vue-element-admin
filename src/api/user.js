@@ -1,24 +1,36 @@
 import request from "@/utils/request";
 
+/**
+ * 用户登录,获取token
+ * @param data
+ * @returns {AxiosPromise}
+ */
 export function login(data) {
   return request({
     url: "backend/login",
-    method: "post",
+    method: "POST",
     data,
   });
 }
 
-export function getInfo(token) {
+/**
+ * 获取用户信息,传入 X-token header
+ * @returns {AxiosPromise}
+ */
+export function getInfo() {
   return request({
     url: "backend/getUserinfo",
-    method: "get",
-    params: { token },
+    method: "GET",
   });
 }
 
-export function logout() {
+/**
+ * 获取用户权限路由
+ * @returns {AxiosPromise}
+ */
+export function getRouter() {
   return request({
-    url: "/vue-admin-template/user/logout",
-    method: "post",
+    url: "backend/getRouter",
+    method: "GET",
   });
 }

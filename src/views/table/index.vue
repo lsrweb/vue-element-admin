@@ -1,13 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table
-      v-loading="listLoading"
-      :data="list"
-      border
-      element-loading-text="Loading"
-      fit
-      highlight-current-row
-    >
+    <el-table v-loading="listLoading" :data="list" border element-loading-text="Loading" fit highlight-current-row>
       <el-table-column align="center" label="ID" width="95">
         <template slot-scope="scope">
           {{ scope.$index }}
@@ -28,24 +21,12 @@
           {{ scope.row.pageviews }}
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        class-name="status-col"
-        label="Status"
-        width="110"
-      >
+      <el-table-column align="center" class-name="status-col" label="Status" width="110">
         <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter"
-            >{{ scope.row.status }}
-          </el-tag>
+          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }} </el-tag>
         </template>
       </el-table-column>
-      <el-table-column
-        align="center"
-        label="Display_time"
-        prop="created_at"
-        width="200"
-      >
+      <el-table-column align="center" label="Display_time" prop="created_at" width="200">
         <template slot-scope="scope">
           <i class="el-icon-time" />
           <span>{{ scope.row.display_time }}</span>

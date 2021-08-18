@@ -1,19 +1,7 @@
 <template>
   <div class="app-container">
-    <el-input
-      v-model="filterText"
-      placeholder="Filter keyword"
-      style="margin-bottom: 30px"
-    />
-
-    <el-tree
-      ref="tree2"
-      :data="data2"
-      :filter-node-method="filterNode"
-      :props="defaultProps"
-      class="filter-tree"
-      default-expand-all
-    />
+    <el-input v-model="filterText" placeholder="Filter keyword" style="margin-bottom: 30px" />
+    <el-tree ref="tree2" :data="data2" :filter-node-method="filterNode" :props="defaultProps" class="filter-tree" default-expand-all />
   </div>
 </template>
 

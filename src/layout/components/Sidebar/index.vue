@@ -2,22 +2,8 @@
   <div :class="{ 'has-logo': showLogo }">
     <logo v-if="showLogo" :collapse="isCollapse" />
     <el-scrollbar wrap-class="scrollbar-wrapper">
-      <el-menu
-        :active-text-color="variables.menuActiveText"
-        :background-color="variables.menuBg"
-        :collapse="isCollapse"
-        :collapse-transition="false"
-        :default-active="activeMenu"
-        :text-color="variables.menuText"
-        :unique-opened="false"
-        mode="vertical"
-      >
-        <sidebar-item
-          v-for="route in routes"
-          :key="route.path"
-          :base-path="route.path"
-          :item="route"
-        />
+      <el-menu :active-text-color="variables.menuActiveText" :background-color="variables.menuBg" :collapse="isCollapse" :collapse-transition="false" :default-active="activeMenu" :text-color="variables.menuText" :unique-opened="false" mode="vertical">
+        <sidebar-item v-for="route in routes" :key="route.path" :base-path="route.path" :item="route" />
       </el-menu>
     </el-scrollbar>
   </div>
@@ -36,17 +22,16 @@ export default {
   },
   computed: {
     ...mapGetters(["sidebar"]),
-    // eslint-disable-next-line vue/return-in-computed-property
     routes() {
-      if (!this.$store.state.settings.openDyRouter) {
+      if (this.$store.state.settings.openDyRouter) {
+        return this.$router.options.routes.concat(global.antRouter);
+      } else {
         return this.$router.options.routes;
-        // eslint-disable-next-line no-empty
       }
     },
     activeMenu() {
       const route = this.$route;
       const { meta, path } = route;
-      // if set path, the sidebar will highlight the path you set
       if (meta.activeMenu) {
         return meta.activeMenu;
       }

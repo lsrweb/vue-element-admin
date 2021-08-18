@@ -1,13 +1,16 @@
 import defaultSettings from "@/settings";
-
-const { showSettings, fixedHeader, sidebarLogo, openDyRouter } =
-  defaultSettings;
+import variables from "@/styles/element-variables.scss";
+const { showSettings, tagsView, fixedHeader, sidebarLogo, openDyRouter, breadIsLink } = defaultSettings;
 
 const state = {
+  theme: variables.theme,
   showSettings: showSettings,
+  tagsView: tagsView,
   fixedHeader: fixedHeader,
   sidebarLogo: sidebarLogo,
+  cateData: null,
   openDyRouter: openDyRouter,
+  breadIsLink: breadIsLink,
 };
 
 const mutations = {

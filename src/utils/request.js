@@ -3,7 +3,6 @@ import { Message, MessageBox } from "element-ui";
 import store from "@/store";
 import { getToken } from "@/utils/auth";
 
-// create an axios instance
 const service = axios.create({
   baseURL: process.env.VUE_APP_BASE_API,
   // withCredentials: true,
@@ -27,7 +26,6 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     const res = response.data;
-    console.log(res);
     if (res.code != 200) {
       Message({
         message: res.message || "Error",
@@ -36,15 +34,11 @@ service.interceptors.response.use(
       });
 
       if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
-        MessageBox.confirm(
-          "You have been logged out, you can cancel to stay on this page, or log in again",
-          "Confirm logout",
-          {
-            confirmButtonText: "Re-Login",
-            cancelButtonText: "Cancel",
-            type: "warning",
-          }
-        ).then(() => {
+        MessageBox.confirm("你已被登出!", "确认退出", {
+          confirmButtonText: "重新登录",
+          cancelButtonText: "取消",
+          type: "warning",
+        }).then(() => {
           store.dispatch("user/resetToken").then(() => {
             location.reload();
           });

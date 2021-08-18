@@ -1,61 +1,28 @@
 <template>
   <div class="login-container">
-    <el-form
-      ref="loginForm"
-      :model="loginForm"
-      :rules="loginRules"
-      auto-complete="on"
-      class="login-form"
-      label-position="left"
-    >
+    <el-form ref="loginForm" :model="loginForm" :rules="loginRules" auto-complete="on" class="login-form" label-position="left">
       <div class="title-container">
-        <h3 class="title">Login Form</h3>
+        <h3 class="title">登录</h3>
       </div>
 
       <el-form-item prop="username">
         <span class="svg-container">
           <svg-icon icon-class="user" />
         </span>
-        <el-input
-          ref="username"
-          v-model="loginForm.username"
-          auto-complete="on"
-          name="username"
-          placeholder="Username"
-          tabindex="1"
-          type="text"
-        />
+        <el-input ref="username" v-model="loginForm.username" auto-complete="on" name="username" placeholder="Username" tabindex="1" type="text" />
       </el-form-item>
 
       <el-form-item prop="password">
         <span class="svg-container">
           <svg-icon icon-class="password" />
         </span>
-        <el-input
-          :key="passwordType"
-          ref="password"
-          v-model="loginForm.password"
-          :type="passwordType"
-          auto-complete="on"
-          name="password"
-          placeholder="Password"
-          tabindex="2"
-          @keyup.enter.native="handleLogin"
-        />
+        <el-input :key="passwordType" ref="password" v-model="loginForm.password" :type="passwordType" auto-complete="on" name="password" placeholder="Password" tabindex="2" @keyup.enter.native="handleLogin" />
         <span class="show-pwd" @click="showPwd">
-          <svg-icon
-            :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'"
-          />
+          <svg-icon :icon-class="passwordType === 'password' ? 'eye' : 'eye-open'" />
         </span>
       </el-form-item>
 
-      <el-button
-        :loading="loading"
-        style="width: 100%; margin-bottom: 30px"
-        type="primary"
-        @click.native.prevent="handleLogin"
-        >Login
-      </el-button>
+      <el-button :loading="loading" style="width: 100%; margin-bottom: 30px" type="primary" @click.native.prevent="handleLogin">Login</el-button>
 
       <div class="tips">
         <span style="margin-right: 20px">username: admin</span>
@@ -66,21 +33,12 @@
 </template>
 
 <script>
-import { validUsername } from "@/utils/validate";
-
 export default {
   name: "Login",
   data() {
-    const validateUsername = (rule, value, callback) => {
-      if (!validUsername(value)) {
-        callback(new Error("Please enter the correct user name"));
-      } else {
-        callback();
-      }
-    };
     const validatePassword = (rule, value, callback) => {
       if (value.length < 6) {
-        callback(new Error("The password can not be less than 6 digits"));
+        callback(new Error("密码最短6位"));
       } else {
         callback();
       }
@@ -88,14 +46,13 @@ export default {
     return {
       loginForm: {
         username: "admin",
-        password: "111111",
+        password: "a123111_",
       },
       loginRules: {
         username: [
           {
             required: true,
             trigger: "blur",
-            validator: validateUsername,
           },
         ],
         password: [

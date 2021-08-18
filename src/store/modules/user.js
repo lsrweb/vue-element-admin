@@ -1,4 +1,4 @@
-import { getInfo, login, logout } from "@/api/user";
+import { getInfo, login, getRouter } from "@/api/user";
 import { getToken, removeToken, setToken } from "@/utils/auth";
 import { resetRouter } from "@/router";
 
@@ -7,6 +7,7 @@ const getDefaultState = () => {
     token: getToken(),
     name: "",
     avatar: "",
+    routerList: [],
   };
 };
 
@@ -25,19 +26,21 @@ const mutations = {
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
   },
+  SET_ROUTER: (state, routerList) => {
+    state.routerList = routerList;
+  },
 };
 
 const actions = {
-  // user login
+  // 用户登录
   login({ commit }, userInfo) {
     const { username, password } = userInfo;
     return new Promise((resolve, reject) => {
-      login({ username: username.trim(), password: password })
+      login({ account: username.trim(), password: password })
         .then((response) => {
-          const { data } = response;
-          console.log(data);
-          commit("SET_TOKEN", data.token);
-          setToken(data.token);
+          const { token } = response;
+          commit("SET_TOKEN", token);
+          setToken(token);
           resolve();
         })
         .catch((error) => {
@@ -46,19 +49,13 @@ const actions = {
     });
   },
 
-  // get user info
-  getInfo({ commit, state }) {
+  // 获取用户信息
+  getInfo({ commit }) {
     return new Promise((resolve, reject) => {
-      getInfo(state.token)
+      getInfo()
         .then((response) => {
           const { data } = response;
-
-          if (!data) {
-            return reject("Verification failed, please Login again.");
-          }
-
           const { name, avatar } = data;
-
           commit("SET_NAME", name);
           commit("SET_AVATAR", avatar);
           resolve(data);
@@ -69,19 +66,28 @@ const actions = {
     });
   },
 
-  // user logout
-  logout({ commit, state }) {
+  // 获取用户权限路由
+  getRouter({ commit }) {
     return new Promise((resolve, reject) => {
-      logout(state.token)
-        .then(() => {
-          removeToken(); // must remove  token  first
-          resetRouter();
-          commit("RESET_STATE");
+      getRouter()
+        .then((response) => {
+          const { data } = response;
+          commit("SET_ROUTER", data);
           resolve();
         })
-        .catch((error) => {
-          reject(error);
+        .catch(() => {
+          reject();
         });
+    });
+  },
+
+  // user logout
+  logout({ commit }) {
+    return new Promise((resolve) => {
+      removeToken(); // must remove  token  first
+      resetRouter();
+      commit("RESET_STATE");
+      resolve();
     });
   },
 
