@@ -34,10 +34,10 @@
 
 <script>
 import Todo from "./Todo.vue";
-import { getToDoList, addTodo, deleteTodo } from "@/api/remote-search";
+import { getToDoList, addTodo, deleteTodo, updated, updatedActive } from "@/api/remote-search";
 import { Message } from "element-ui";
 
-const STORAGE_KEY = "todos";
+// const STORAGE_KEY = "todos";
 const filters = {
   all: (todos) => todos,
   active: (todos) => todos.filter((todo) => !todo.done),
@@ -83,6 +83,7 @@ export default {
     },
   },
   methods: {
+    // 获取todo
     fetchData() {
       getToDoList().then((response) => {
         let todos = [];
@@ -98,10 +99,10 @@ export default {
         this.todos = todos;
       });
     },
-    setLocalStorage() {
-      window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
-    },
-    // 添加
+    // setLocalStorage() {
+    //   window.localStorage.setItem(STORAGE_KEY, JSON.stringify(this.todos));
+    // },
+    // 添加todo
     addTodo(e) {
       const text = e.target.value;
       addTodo({ text: text }).then((response) => {
@@ -114,9 +115,16 @@ export default {
       });
     },
     toggleTodo(val) {
-      val.done = !val.done;
-      this.setLocalStorage();
+      const { id, done } = val;
+      const isDone = done ? 0 : 1;
+      updatedActive(id, isDone).then((response) => {
+        if (response.code == 200) {
+          Message.success("修改成功");
+          this.fetchData();
+        }
+      });
     },
+    // 删除todo
     deleteTodo(todo) {
       deleteTodo(todo).then((response) => {
         if (response.code == 200) {
@@ -125,19 +133,24 @@ export default {
         }
       });
     },
+    // 编辑todo
     editTodo({ todo, value }) {
       const { id } = todo;
-
-      console.log(value, id);
+      updated(id, value).then((response) => {
+        if (response.code == 200) {
+          Message.success("修改成功");
+          this.fetchData();
+        }
+      });
     },
     clearCompleted() {
       this.todos = this.todos.filter((todo) => !todo.done);
-      this.setLocalStorage();
+      // this.setLocalStorage();
     },
     toggleAll({ done }) {
       this.todos.forEach((todo) => {
         todo.done = done;
-        this.setLocalStorage();
+        // this.setLocalStorage();
       });
     },
   },

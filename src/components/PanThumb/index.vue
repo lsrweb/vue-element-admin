@@ -2,11 +2,11 @@
   <div :style="{ zIndex: zIndex, height: height, width: width }" class="pan-item">
     <div class="pan-info">
       <div class="pan-info-roles-container">
+        <code>你🐎</code>
         <slot />
       </div>
     </div>
-    <!-- eslint-disable-next-line -->
-    <div :style="{backgroundImage: `url(${image})`}" class="pan-thumb"></div>
+    <div :style="{ backgroundImage: `url(${image})` }" class="pan-thumb"></div>
   </div>
 </template>
 
@@ -132,7 +132,7 @@ export default {
 }
 
 .pan-item:hover .pan-thumb {
-  transform: rotate(-110deg);
+  transform: rotate(-360deg);
 }
 
 .pan-item:hover .pan-info p a {

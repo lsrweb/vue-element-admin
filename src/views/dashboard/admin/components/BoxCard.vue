@@ -1,26 +1,26 @@
 <template>
-  <el-card class="box-card-component" style="margin-left: 8px">
-    <div slot="header" class="box-card-header">
-      <img src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png" />
-    </div>
+  <el-card class="box-card-component" style="margin-left: 8px; padding-top: 30px">
+    <!--    <div slot="header" class="box-card-header">-->
+    <!--      <img src="https://wpimg.wallstcn.com/e7d23d71-cf19-4b90-a1cc-f56af8c0903d.png" />-->
+    <!--    </div>-->
     <div style="position: relative">
       <pan-thumb :image="avatar" class="panThumb" />
-      <mallki class-name="mallki-text" text="vue-element-admin" />
+      <mallki class-name="mallki-text" :text="title" />
       <div class="progress-item" style="padding-top: 35px">
         <span>Vue</span>
-        <el-progress :percentage="70" />
+        <el-progress :percentage="59.1" />
       </div>
       <div class="progress-item">
         <span>JavaScript</span>
-        <el-progress :percentage="18" />
+        <el-progress :percentage="27.2" />
       </div>
       <div class="progress-item">
-        <span>CSS</span>
-        <el-progress :percentage="12" />
+        <span>SCSS</span>
+        <el-progress :percentage="13.3" />
       </div>
       <div class="progress-item">
         <span>ESLint</span>
-        <el-progress :percentage="100" status="success" />
+        <el-progress :percentage="0.4" />
       </div>
     </div>
   </el-card>
@@ -33,7 +33,12 @@ import Mallki from "@/components/TextHoverEffect/Mallki";
 
 export default {
   components: { PanThumb, Mallki },
-
+  props: {
+    title: {
+      type: String,
+      default: "Vue-Element-Admin 前端",
+    },
+  },
   filters: {
     statusFilter(status) {
       const statusMap = {

@@ -8,23 +8,23 @@
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
-    <el-row :gutter="32">
-      <el-col :lg="8" :sm="24" :xs="24">
-        <div class="chart-wrapper">
-          <raddar-chart />
-        </div>
-      </el-col>
-      <el-col :lg="8" :sm="24" :xs="24">
-        <div class="chart-wrapper">
-          <pie-chart />
-        </div>
-      </el-col>
-      <el-col :lg="8" :sm="24" :xs="24">
-        <div class="chart-wrapper">
-          <bar-chart />
-        </div>
-      </el-col>
-    </el-row>
+    <!--    <el-row :gutter="32">-->
+    <!--      <el-col :lg="8" :sm="24" :xs="24">-->
+    <!--        <div class="chart-wrapper">-->
+    <!--          <raddar-chart />-->
+    <!--        </div>-->
+    <!--      </el-col>-->
+    <!--      <el-col :lg="8" :sm="24" :xs="24">-->
+    <!--        <div class="chart-wrapper">-->
+    <!--          <pie-chart />-->
+    <!--        </div>-->
+    <!--      </el-col>-->
+    <!--      <el-col :lg="8" :sm="24" :xs="24">-->
+    <!--        <div class="chart-wrapper">-->
+    <!--          <bar-chart />-->
+    <!--        </div>-->
+    <!--      </el-col>-->
+    <!--    </el-row>-->
 
     <el-row :gutter="8">
       <!--      <el-col :lg="{ span: 12 }" :md="{ span: 24 }" :sm="{ span: 24 }" :xl="{ span: 12 }" :xs="{ span: 24 }" style="padding-right: 8px; margin-bottom: 30px">-->
@@ -36,6 +36,9 @@
       <el-col :lg="{ span: 6 }" :md="{ span: 12 }" :sm="{ span: 12 }" :xl="{ span: 6 }" :xs="{ span: 24 }" style="margin-bottom: 30px">
         <box-card />
       </el-col>
+      <el-col :lg="{ span: 6 }" :md="{ span: 12 }" :sm="{ span: 12 }" :xl="{ span: 6 }" :xs="{ span: 24 }" style="margin-bottom: 30px">
+        <box-card :title="'Nodejs + Mysql 后端'" />
+      </el-col>
     </el-row>
   </div>
 </template>
@@ -44,9 +47,9 @@
 import GithubCorner from "@/components/GithubCorner";
 import PanelGroup from "./components/PanelGroup";
 import LineChart from "./components/LineChart";
-import RaddarChart from "./components/RaddarChart";
-import PieChart from "./components/PieChart";
-import BarChart from "./components/BarChart";
+// import RaddarChart from "./components/RaddarChart";
+// import PieChart from "./components/PieChart";
+// import BarChart from "./components/BarChart";
 import TodoList from "./components/TodoList";
 import BoxCard from "./components/BoxCard";
 
@@ -75,9 +78,9 @@ export default {
     GithubCorner,
     PanelGroup,
     LineChart,
-    RaddarChart,
-    PieChart,
-    BarChart,
+    // RaddarChart,
+    // PieChart,
+    // BarChart,
     TodoList,
     BoxCard,
   },
