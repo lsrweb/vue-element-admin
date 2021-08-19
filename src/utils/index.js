@@ -356,3 +356,61 @@ export function removeClass(ele, cls) {
     ele.className = ele.className.replace(reg, " ");
   }
 }
+
+/**
+ *
+ * @param data 路由表
+ * @param idName 父级标识,默认为id
+ * @param parentIdName  子级标识,默认为pid
+ * @returns {*[]}
+ */
+export function buildTree(data, idName, parentIdName) {
+  if (!data) return "请传入路由数据";
+  const id = idName || "id";
+  const parentId = parentIdName || "pid";
+  // 删除 所有 children,以防止多次调用
+  data.forEach(function (item) {
+    delete item.children;
+  });
+  const map = {};
+  data.forEach(function (item) {
+    map[item[id]] = item;
+  });
+  const menu = [];
+  data.forEach(function (item) {
+    const parent = map[item[parentId]];
+    if (parent) {
+      (parent.children || (parent.children = [])).push(item);
+      // 如果父级有子元素
+      if (parent.children) {
+        buildTree(parent.children);
+        parent.meta = {
+          title: parent.title,
+          icon: parent.icon,
+          affix: parent.affix == "true" ? true : false,
+        };
+        parent.alwaysShow = parent.alwaysShow == "true" ? parent.alwaysShow : false;
+        parent.redirect = parent.redirect == "true" ? parent.children[0].path : "";
+      }
+      // 如果没有子元素
+      if (!item.children) {
+        item.meta = {
+          title: item.title,
+          icon: item.icon,
+          affix: item.affix == "true" ? true : false,
+        };
+        item.alwaysShow = item.alwaysShow == "true" ? item.alwaysShow : false;
+        item.redirect = item.redirect == "true" ? item.children[0].path : "";
+      }
+    } else {
+      // 顶级路由
+      item.meta = {
+        title: item.title,
+        icon: item.icon,
+        affix: item.affix == "true" ? true : false,
+      };
+      menu.push(item);
+    }
+  });
+  return menu;
+}

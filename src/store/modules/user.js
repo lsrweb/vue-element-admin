@@ -8,6 +8,7 @@ const getDefaultState = () => {
     name: "",
     avatar: "",
     routerList: [],
+    roles: [],
   };
 };
 
@@ -28,6 +29,9 @@ const mutations = {
   },
   SET_ROUTER: (state, routerList) => {
     state.routerList = routerList;
+  },
+  SET_ROLE: (state, role) => {
+    state.roles.push(role);
   },
 };
 
@@ -58,6 +62,10 @@ const actions = {
           const { name, avatar } = data;
           commit("SET_NAME", name);
           commit("SET_AVATAR", avatar);
+          data.role.forEach((value) => {
+            commit("SET_ROLE", value.role);
+          });
+
           resolve(data);
         })
         .catch((error) => {
@@ -81,20 +89,18 @@ const actions = {
     });
   },
 
-  // user logout
   logout({ commit }) {
     return new Promise((resolve) => {
-      removeToken(); // must remove  token  first
+      removeToken();
       resetRouter();
       commit("RESET_STATE");
       resolve();
     });
   },
 
-  // remove token
   resetToken({ commit }) {
     return new Promise((resolve) => {
-      removeToken(); // must remove  token  first
+      removeToken();
       commit("RESET_STATE");
       resolve();
     });

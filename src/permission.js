@@ -1,11 +1,12 @@
 import router from "./router";
 import store from "./store";
 import { Message } from "element-ui";
-import NProgress from "nprogress"; // progress bar
-import "nprogress/nprogress.css"; // progress bar style
-import { getToken } from "@/utils/auth"; // get token from cookie
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
+import { getToken } from "@/utils/auth";
 import getPageTitle from "@/utils/get-page-title";
 import Layout from "@/layout";
+import { buildTree } from "@/utils";
 
 NProgress.configure({ showSpinner: false }); // NProgress Configuration
 let getRouter;
@@ -28,12 +29,21 @@ router.beforeEach(async (to, from, next) => {
       } else {
         try {
           await store.dispatch("user/getInfo");
-          await store.dispatch("user/getRouter");
-          const router = store.getters.routerList;
-          router.push({ path: "*", redirect: "/404", hidden: true });
-          getRouter = router;
-          routerGo(to, next);
-          // next();
+          if (store.state.settings.openDyRouter) {
+            await store.dispatch("user/getRouter");
+            const router = store.getters.routerList;
+            if (store.state.settings.isTreeLoad) {
+              getRouter = router;
+            } else {
+              let buildTreeArray;
+              buildTreeArray = buildTree(router);
+              getRouter = buildTreeArray;
+            }
+            router.push({ path: "*", redirect: "/404", hidden: true });
+            routerGo(to, next);
+          } else {
+            next();
+          }
         } catch (error) {
           await store.dispatch("user/resetToken");
           Message.error(error || "出现错误");
