@@ -1,71 +1,58 @@
 <template>
-  <div class="app-container">
-    <el-table v-loading="listLoading" :data="list" border element-loading-text="Loading" fit highlight-current-row>
-      <el-table-column align="center" label="ID" width="95">
-        <template slot-scope="scope">
-          {{ scope.$index }}
-        </template>
-      </el-table-column>
-      <el-table-column label="Title">
-        <template slot-scope="scope">
-          {{ scope.row.title }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Author" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.author }}</span>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Pageviews" width="110">
-        <template slot-scope="scope">
-          {{ scope.row.pageviews }}
-        </template>
-      </el-table-column>
-      <el-table-column align="center" class-name="status-col" label="Status" width="110">
-        <template slot-scope="scope">
-          <el-tag :type="scope.row.status | statusFilter">{{ scope.row.status }} </el-tag>
-        </template>
-      </el-table-column>
-      <el-table-column align="center" label="Display_time" prop="created_at" width="200">
-        <template slot-scope="scope">
-          <i class="el-icon-time" />
-          <span>{{ scope.row.display_time }}</span>
-        </template>
-      </el-table-column>
-    </el-table>
-  </div>
+  <el-upload class="avatar-uploader" action="http://localhost:8000/api/backend/upload/files/global" name="file" :show-file-list="false" :on-success="handleAvatarSuccess">
+    <img v-if="imageUrl" :src="imageUrl" class="avatar" />
+    <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+  </el-upload>
 </template>
 
-<script>
-import { getList } from "@/api/table";
+<style>
+.avatar-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.avatar-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.avatar-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  width: 178px;
+  height: 178px;
+  line-height: 178px;
+  text-align: center;
+}
+.avatar {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>
 
+<script>
 export default {
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        published: "success",
-        draft: "gray",
-        deleted: "danger",
-      };
-      return statusMap[status];
-    },
-  },
   data() {
     return {
-      list: null,
-      listLoading: true,
+      imageUrl: "",
     };
   },
-  created() {
-    this.fetchData();
-  },
   methods: {
-    fetchData() {
-      this.listLoading = true;
-      getList().then((response) => {
-        this.list = response.data.items;
-        this.listLoading = false;
-      });
+    handleAvatarSuccess(res, file) {
+      this.imageUrl = URL.createObjectURL(file.raw);
+    },
+    beforeAvatarUpload(file) {
+      const isJPG = file.type === "image/jpeg";
+      const isLt2M = file.size / 1024 / 1024 < 2;
+
+      if (!isJPG) {
+        this.$message.error("上传头像图片只能是 JPG 格式!");
+      }
+      if (!isLt2M) {
+        this.$message.error("上传头像图片大小不能超过 2MB!");
+      }
+      return isJPG && isLt2M;
     },
   },
 };

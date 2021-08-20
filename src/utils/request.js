@@ -33,7 +33,7 @@ service.interceptors.response.use(
         duration: 5 * 1000,
       });
 
-      if (res.code === 50008 || res.code === 50012 || res.code === 50014) {
+      if (res.code === 508 || res.code === 50012 || res.code === 50014) {
         MessageBox.confirm("你已被登出!", "确认退出", {
           confirmButtonText: "重新登录",
           cancelButtonText: "取消",
@@ -50,7 +50,7 @@ service.interceptors.response.use(
     }
   },
   (error) => {
-    console.log("err" + error); // for debug
+    console.log(error);
     Message({
       message: error.message,
       type: "error",

@@ -16,7 +16,6 @@ export const constantRoutes = [
     component: () => import("@/views/404"),
     hidden: true,
   },
-
   {
     path: "/",
     component: Layout,
@@ -27,19 +26,6 @@ export const constantRoutes = [
         name: "Dashboard",
         component: () => import("@/views/dashboard/index"),
         meta: { title: "首页", icon: "dashboard" },
-      },
-    ],
-  },
-
-  {
-    path: "/form",
-    component: Layout,
-    children: [
-      {
-        path: "index",
-        name: "Form",
-        component: () => import("@/views/form/index"),
-        meta: { title: "表单", icon: "form" },
       },
     ],
   },

@@ -6,21 +6,9 @@
     <div style="position: relative">
       <pan-thumb :image="avatar" class="panThumb" />
       <mallki class-name="mallki-text" :text="title" />
-      <div class="progress-item" style="padding-top: 35px">
-        <span>Vue</span>
-        <el-progress :percentage="59.1" />
-      </div>
-      <div class="progress-item">
-        <span>JavaScript</span>
-        <el-progress :percentage="27.2" />
-      </div>
-      <div class="progress-item">
-        <span>SCSS</span>
-        <el-progress :percentage="13.3" />
-      </div>
-      <div class="progress-item">
-        <span>ESLint</span>
-        <el-progress :percentage="0.4" />
+      <div class="progress-item" v-for="(data, index) in lang" :key="index" :style="[{ 'padding-top': index === 0 ? '35px' : '0' }]">
+        <span>{{ data.lang }}</span>
+        <el-progress :percentage="data.per" />
       </div>
     </div>
   </el-card>
@@ -37,6 +25,17 @@ export default {
     title: {
       type: String,
       default: "Vue-Element-Admin 前端",
+    },
+    lang: {
+      type: Array,
+      default: () => {
+        return [
+          { lang: "Vue", per: 59.1 },
+          { lang: "JavaScript", per: 27.2 },
+          { lang: "SCSS", per: 13.3 },
+          { lang: "HTML", per: 0.4 },
+        ];
+      },
     },
   },
   filters: {

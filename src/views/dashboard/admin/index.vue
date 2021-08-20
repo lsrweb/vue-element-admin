@@ -37,7 +37,7 @@
         <box-card />
       </el-col>
       <el-col :lg="{ span: 6 }" :md="{ span: 12 }" :sm="{ span: 12 }" :xl="{ span: 6 }" :xs="{ span: 24 }" style="margin-bottom: 30px">
-        <box-card :title="'Nodejs + Mysql 后端'" />
+        <box-card :title="'Nodejs + Mysql 后端'" :lang="lang" />
       </el-col>
     </el-row>
   </div>
@@ -52,6 +52,13 @@ import LineChart from "./components/LineChart";
 // import BarChart from "./components/BarChart";
 import TodoList from "./components/TodoList";
 import BoxCard from "./components/BoxCard";
+
+const lang = [
+  { lang: "nodejs", per: 59.1 },
+  { lang: "Mysql", per: 27.2 },
+  { lang: "JavaScript", per: 53.3 },
+  { lang: "HTML", per: 6.4 },
+];
 
 const lineChartData = {
   newVisitis: {
@@ -87,6 +94,7 @@ export default {
   data() {
     return {
       lineChartData: lineChartData.newVisitis,
+      lang,
     };
   },
   methods: {

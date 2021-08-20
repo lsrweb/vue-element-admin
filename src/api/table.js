@@ -7,3 +7,11 @@ export function getList(params) {
     params,
   });
 }
+
+export function table() {
+  return request({
+    url: "backend/backendMember/index",
+    method: "GET",
+    baseURL: "http://stu.api.sdbaizhi.com/",
+  });
+}
