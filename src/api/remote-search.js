@@ -53,3 +53,21 @@ export function updatedActive(id, done) {
     method: "GET",
   });
 }
+// 单图上传
+export function upload(data) {
+  return request({
+    url: "backend/upload/image/global",
+    method: "POST",
+    data,
+  });
+}
+// 多图上传
+
+// 文件上传
+export function uploadFiles(data) {
+  return request({
+    url: "backend/upload/files/global",
+    method: "POST",
+    data,
+  });
+}

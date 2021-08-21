@@ -8,6 +8,7 @@ const state = {
   device: "desktop",
   size: Cookies.get("size") || "medium",
   appLoading: true,
+  language: "zh",
 };
 
 const mutations = {
