@@ -62,6 +62,13 @@ export function upload(data) {
   });
 }
 // 多图上传
+export function uploadImages(data) {
+  return request({
+    url: "backend/upload/images/global",
+    method: "POST",
+    data,
+  });
+}
 
 // 文件上传
 export function uploadFiles(data) {

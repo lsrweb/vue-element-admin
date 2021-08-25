@@ -1,16 +1,19 @@
 <template>
   <div>
-    <Tinymce v-model="test" />
-    <div v-html="test"></div>
+    <!--    <Tinymce v-model="test" />-->
+    <WangEditor v-model="test" />
+    <div v-text="test"></div>
   </div>
 </template>
 
 <script>
-import Tinymce from "@/components/Tinymce";
+// import Tinymce from "@/components/Tinymce";
+import WangEditor from "@/components/WangeEditor";
 
 export default {
   components: {
-    Tinymce,
+    // Tinymce,
+    WangEditor,
   },
   data() {
     return {

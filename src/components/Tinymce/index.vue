@@ -208,64 +208,6 @@ export default {
             }
           }
         },
-        // file_picker_callback: (cb, value, meta) => {
-        //   if (meta.filetype == "media") {
-        //     let input = document.createElement("input");
-        //     input.setAttribute("type", "file");
-        //     let that = this;
-        //     input.onchange = function () {
-        //       that.loadingChange = true;
-        //       let file = this.files[0];
-        //       if (file.size / 1024 / 1024 > 10) {
-        //         Message.error({
-        //           message: "请上传小于10Mb的视频",
-        //         });
-        //         that.changeLoading = false;
-        //         return false;
-        //       }
-        //       const formData = new FormData();
-        //       formData.append("file", file);
-        //       formData.append("type", "video");
-        //
-        //       upload(formData)
-        //         .then((res) => {
-        //           if (res.data && res.code == 200) {
-        //             that.video = res.data;
-        //             cb(`${process.env.IMAGE_URL}${that.video}`); // 将url显示在弹框输入框中
-        //             that.loadingChange = false;
-        //             that.$notify({
-        //               title: "视频上传成功",
-        //               message: "视频上传成功!",
-        //               duration: 2000,
-        //             });
-        //           }
-        //         })
-        //         .catch(() => {
-        //           cb();
-        //         });
-        //     };
-        //     input.click();
-        //   }
-        //   if (meta.filetype == "image") {
-        //     let input = document.createElement("input");
-        //     input.setAttribute("type", "file");
-        //     let that = this;
-        //     input.onchange = function () {
-        //       let file = this.files[0]; // 选取第一个文件
-        //       const formData = new FormData();
-        //       formData.append("file", file);
-        //       upload(formData).then((res) => {
-        //         that.video = res.data;
-        //         cb(`${process.env.VUE_APP_IMAGE_URL}${res.data}`);
-        //       });
-        //     };
-        //     input.click();
-        //   }
-        // },
-        images_upload_handler(blobInfo, success, failure, progress) {
-          progress(0);
-          progress(100);
-        },
       });
     },
     destroyTinymce() {
