@@ -14,6 +14,8 @@ import router from "./router";
 import "@/icons";
 import "@/permission";
 
+import "@/directive/permission/index";
+
 Vue.use(ElementUI, { locale });
 
 Vue.config.productionTip = false;
