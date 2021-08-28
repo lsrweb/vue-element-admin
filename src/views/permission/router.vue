@@ -86,7 +86,7 @@ export default {
       showAdd: false,
       total: 0,
       page: 1,
-      limit: 5,
+      limit: 10,
 
       tableData: [],
     };

@@ -1,5 +1,5 @@
 <template>
-  <div id="app">
+  <div id="app" class="scroller">
     <router-view />
     <!--    <live2d />-->
   </div>
@@ -15,3 +15,5 @@ export default {
   },
 };
 </script>
+
+<style></style>
