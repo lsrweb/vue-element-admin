@@ -1,5 +1,9 @@
 <template>
   <el-dialog :title="title" :visible="isShow" :width="size" @close="isClose" top="20px">
+    <div class="radio" style="padding-left: 120px; margin-bottom: 20px">
+      <el-radio v-model="type" label="father" border @change="changeRouterType">添加父级节点</el-radio>
+      <el-radio v-model="type" label="children" border @change="changeRouterType">添加子级节点</el-radio>
+    </div>
     <el-form :model="form">
       <el-form-item label="节点名称" :label-width="formLabelWidth" :required="true">
         <el-input v-model="form.router_name" placeholder="请用英文单词表示!" autocomplete="off"></el-input>
@@ -13,7 +17,7 @@
         </el-select>
       </el-form-item>
       <el-form-item label="节点组件位置" :label-width="formLabelWidth" :required="true">
-        <el-input v-model="form.router_component" placeholder="请对应至前端组件位置进行填写" autocomplete="off"></el-input>
+        <el-input v-model="form.router_component" :disabled="type == 'father'" placeholder="请对应至前端组件位置进行填写" autocomplete="off"></el-input>
       </el-form-item>
       <el-form-item label="节点访问" :label-width="formLabelWidth" :required="true">
         <el-input v-model="form.router_path" placeholder="节点访问路径,一般情况下请对应至节点组件位置" autocomplete="off"></el-input>
@@ -24,7 +28,7 @@
       <el-form-item label="节点标题" :label-width="formLabelWidth" :required="true">
         <el-input v-model="form.router_title" placeholder="用于显示后台左侧菜单文字" autocomplete="off"></el-input>
       </el-form-item>
-      <el-form-item label="节点标题" :label-width="formLabelWidth" :required="true">
+      <el-form-item label="节点按钮权限" :label-width="formLabelWidth" :required="true">
         <el-select v-model="form.page_button" multiple filterable allow-create default-first-option placeholder="请选择按钮权限标签">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"> </el-option>
         </el-select>
@@ -57,6 +61,7 @@
 
 <script>
 import SvgIcons from "@/icons/svg-icons";
+import { addRouter } from "@/api/permission";
 
 export default {
   name: "Add",
@@ -90,7 +95,7 @@ export default {
           label: "修改",
         },
       ],
-
+      type: "father",
       form: {
         router_name: "",
         router_icon: "",
@@ -106,9 +111,23 @@ export default {
     };
   },
   methods: {
+    // 节点type 选择
+    changeRouterType(e) {
+      switch (e) {
+        case "father":
+          this.form.router_component = "Layout";
+          break;
+        case "children":
+          this.form.router_component = "";
+          break;
+      }
+    },
+
     // 确认添加
     confirmAdd() {
-      console.log(this.form);
+      addRouter({ data: this.form }).then((response) => {
+        console.log(response);
+      });
     },
 
     // 关闭提示
@@ -130,6 +149,9 @@ export default {
           console.log("取消");
         });
     },
+  },
+  mounted() {
+    this.form.router_component = "Layout";
   },
 };
 </script>
