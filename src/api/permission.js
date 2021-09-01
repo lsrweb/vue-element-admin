@@ -69,3 +69,14 @@ export function deleteRouter(data) {
     },
   });
 }
+
+/**
+ * get father node
+ * @returns {AxiosPromise}
+ */
+export function getFatherRouter() {
+  return request({
+    url: "backend/router/father",
+    method: "GET",
+  });
+}

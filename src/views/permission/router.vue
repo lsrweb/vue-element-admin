@@ -2,93 +2,107 @@
   <div class="router">
     <!--    按钮组-->
     <div class="btn_group">
-      <el-button type="primary" :plain="true" size="mini" icon="el-icon-plus" @click="showAdd = true">添加节点</el-button>
+      <el-button :plain="true" icon="el-icon-plus" size="mini" type="primary" @click="showAdd = true">添加节点</el-button>
     </div>
     <!--  表格  -->
     <div class="main_table">
-      <el-table :data="tableData" border style="width: 97%; margin: 0 auto">
-        <el-table-column prop="pid" label="节点类型" width="160" align="center">
+      <el-table v-loading="loadingTable" :data="tableData" border style="width: 97%; margin: 0 auto">
+        <el-table-column align="center" label="ID" prop="id" width="60"></el-table-column>
+        <el-table-column align="center" label="节点类型" prop="pid" width="160">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.pid == 0">顶级路由</el-tag>
-            <el-tag type="info" v-if="scope.row.pid != 0">{{ `pid为${scope.row.pid}的子路由` }}</el-tag>
+            <el-tag v-if="scope.row.pid == 0" type="success">顶级路由</el-tag>
+            <el-tag v-if="scope.row.pid != 0" type="info">{{ `pid为${scope.row.pid}的子路由` }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="节点名称" width="160" align="center"> </el-table-column>
-        <el-table-column prop="sort" label="节点排序" width="120" align="center"> </el-table-column>
-        <el-table-column prop="component" label="组件位置" width="180"> </el-table-column>
-        <el-table-column prop="city" label="组件图标" width="120" align="center">
+        <el-table-column align="center" label="节点名称" prop="name" width="160"></el-table-column>
+        <el-table-column align="center" label="节点排序" prop="sort" width="120"></el-table-column>
+        <el-table-column label="组件位置" prop="component" width="180"></el-table-column>
+        <el-table-column align="center" label="组件图标" prop="city" width="120">
           <template slot-scope="scope">
             <svg-icon :icon-class="scope.row.icon"></svg-icon>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="节点name" width="120"> </el-table-column>
-        <el-table-column prop="path" label="节点访问路径" width="220"> </el-table-column>
-        <el-table-column prop="created_router" label="默认重定向" width="120" align="center">
+        <el-table-column label="节点name" prop="name" width="120"></el-table-column>
+        <el-table-column label="节点访问路径" prop="path" width="220"></el-table-column>
+        <el-table-column align="center" label="默认重定向" prop="created_router" width="120">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.redirect == 'true'">默认定向</el-tag>
-            <el-tag type="warning" v-if="scope.row.redirect == 'false'">取消定向</el-tag>
+            <el-tag v-if="scope.row.redirect == 'true'" type="success">默认定向</el-tag>
+            <el-tag v-if="scope.row.redirect == 'false'" type="warning">取消定向</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="created_router" label="显示规则忽略" width="120">
+        <el-table-column label="显示规则忽略" prop="created_router" width="120">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.alwaysShow == 'true'">默认规则</el-tag>
-            <el-tag type="warning" v-if="scope.row.alwaysShow == 'false'">忽略默认</el-tag>
+            <el-tag v-if="scope.row.alwaysShow == 'true'" type="success">默认规则</el-tag>
+            <el-tag v-if="scope.row.alwaysShow == 'false'" type="warning">忽略默认</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="created_router" label="标签栏固定" width="120">
+        <el-table-column label="标签栏固定" prop="created_router" width="120">
           <template slot-scope="scope">
-            <el-tag type="success" v-if="scope.row.affix == 'true'">默认固定</el-tag>
-            <el-tag type="warning" v-if="scope.row.affix == 'false'">不固定</el-tag>
+            <el-tag v-if="scope.row.affix == 'true'" type="success">默认固定</el-tag>
+            <el-tag v-if="scope.row.affix == 'false'" type="warning">不固定</el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="created_router" label="节点创建日期" width="220">
+        <el-table-column label="节点创建日期" prop="created_router" width="220">
           <template slot-scope="scope">
-            {{ new Date(scope.row.created_router).toLocaleString() }}
+            {{ new Date(Number(scope.row.created_router)).toLocaleString() }}
           </template>
         </el-table-column>
-        <el-table-column prop="updated_router" label="节点更新日期" width="220">
+        <el-table-column label="节点更新日期" prop="updated_router" width="220">
           <template slot-scope="scope">
-            {{ new Date(scope.row.updated_router).toLocaleString() }}
+            {{ new Date(Number(scope.row.updated_router)).toLocaleString() }}
           </template>
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="220">
           <template slot-scope="scope">
-            <el-button @click="handleClick(scope.row)" type="text" size="small">编辑</el-button>
-            <el-button type="text" size="small">编辑</el-button>
+            <el-button icon="el-icon-edit" plain size="mini" @click="[(showEditor = true), handleClick(scope.row)]" style="margin-right: 5px">编辑</el-button>
+            <el-popconfirm cancel-button-text="取消" confirm-button-text="确认" icon="el-icon-info" icon-color="red" title="确认删除?" @confirm="deleteRouter(scope.row.id)">
+              <el-button slot="reference" icon="el-icon-delete" plain size="mini" type="danger">删除</el-button>
+            </el-popconfirm>
           </template>
         </el-table-column>
       </el-table>
 
       <!--   分页   -->
-      <pagination v-show="total > 0" :pageSizes="[10, 20]" :total="total" :page.sync="page" :limit.sync="limit" @pagination="fetchData" />
+      <pagination v-show="total > 0" :limit.sync="limit" :page.sync="page" :pageSizes="[10, 20]" :total="total" @pagination="fetchData" />
     </div>
     <!--  添加节点  -->
     <div v-if="showAdd">
-      <Add title="添加节点" size="50%" @changeAdd="changeAdd" />
+      <Add size="50%" title="添加节点" @changeAdd="changeAdd" />
+    </div>
+    <div v-if="showEditor">
+      <Editor size="50%" title="添加节点" />
     </div>
   </div>
 </template>
 
 <script>
 import Add from "./router_diag/Add";
-import { getRouter } from "@/api/permission";
+import Editor from "./router_diag/Editor";
+
+import { getRouter, deleteRouter } from "@/api/permission";
 import Pagination from "@/components/Pagination";
+import { Message } from "element-ui";
 
 export default {
   name: "Router",
   components: {
     Add,
+    Editor,
 
     Pagination,
   },
   data() {
     return {
       showAdd: false,
+      showEditor: false,
+
+      loadingTable: true,
       total: 0,
       page: 1,
       limit: 10,
 
       tableData: [],
+      editorData: null,
     };
   },
   methods: {
@@ -101,13 +115,25 @@ export default {
       getRouter({ page: this.page, limit: this.limit }).then((response) => {
         this.total = response.total;
         this.tableData = response.data;
+        setTimeout(() => {
+          this.loadingTable = false;
+        }, 400);
       });
     },
 
-    // eslint-disable-next-line no-unused-vars
-    handleClick(row) {},
+    deleteRouter(e) {
+      deleteRouter(e).then((response) => {
+        if (response.code == 200) {
+          Message.info("");
+        }
+      });
+    },
+    handleClick(row) {
+      console.log(row);
+    },
     changeAdd(isShow) {
       this.showAdd = isShow;
+      this.fetchData();
     },
   },
   mounted() {
@@ -116,4 +142,4 @@ export default {
 };
 </script>
 
-<style scoped lang="scss"></style>
+<style lang="scss" scoped></style>

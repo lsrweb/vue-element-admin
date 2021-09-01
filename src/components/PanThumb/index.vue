@@ -2,7 +2,7 @@
   <div :style="{ zIndex: zIndex, height: height, width: width }" class="pan-item">
     <div class="pan-info">
       <div class="pan-info-roles-container">
-        <code>你🐎</code>
+        <!--        <code>你🐎</code>-->
         <slot />
       </div>
     </div>
