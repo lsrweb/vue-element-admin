@@ -9,11 +9,10 @@ const service = axios.create({
   timeout: 5000,
 });
 
-// request interceptor
 service.interceptors.request.use(
   (config) => {
     if (store.getters.token) {
-      config.headers["X_Token"] = getToken();
+      config.headers["token"] = getToken();
     }
     return config;
   },

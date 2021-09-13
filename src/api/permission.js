@@ -80,3 +80,12 @@ export function getFatherRouter() {
     method: "GET",
   });
 }
+
+// 角色管理
+
+export function getRole() {
+  return request({
+    url: "/backend/role",
+    method: "GET",
+  });
+}

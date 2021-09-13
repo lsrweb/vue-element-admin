@@ -11,10 +11,10 @@
         <el-table-column align="center" label="节点类型" prop="pid" width="160">
           <template slot-scope="scope">
             <el-tag v-if="scope.row.pid == 0" type="success">顶级路由</el-tag>
-            <el-tag v-if="scope.row.pid != 0" type="info">{{ `pid为${scope.row.pid}的子路由` }}</el-tag>
+            <el-tag v-if="scope.row.pid != 0" type="info">{{ `id为${scope.row.pid}的子路由` }}</el-tag>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="节点名称" prop="name" width="160"></el-table-column>
+        <el-table-column align="center" label="节点名称" prop="title" width="160"> </el-table-column>
         <el-table-column align="center" label="节点排序" prop="sort" width="120"></el-table-column>
         <el-table-column label="组件位置" prop="component" width="180"></el-table-column>
         <el-table-column align="center" label="组件图标" prop="city" width="120">
@@ -70,7 +70,7 @@
       <Add size="50%" title="添加节点" @changeAdd="changeAdd" />
     </div>
     <div v-if="showEditor">
-      <Editor size="50%" title="添加节点" />
+      <Editor size="50%" title="修改节点" :id="editId" @changeEditor="changeEditor" @fetchData="fetchData" />
     </div>
   </div>
 </template>
@@ -103,6 +103,8 @@ export default {
 
       tableData: [],
       editorData: null,
+
+      editId: null,
     };
   },
   methods: {
@@ -124,16 +126,21 @@ export default {
     deleteRouter(e) {
       deleteRouter(e).then((response) => {
         if (response.code == 200) {
-          Message.info("");
+          Message.info(response.message);
+          this.fetchData();
         }
       });
     },
     handleClick(row) {
-      console.log(row);
+      this.editId = row.id;
+      this.showEditor = true;
     },
     changeAdd(isShow) {
       this.showAdd = isShow;
       this.fetchData();
+    },
+    changeEditor(isShow) {
+      this.showEditor = isShow;
     },
   },
   mounted() {

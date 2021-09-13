@@ -140,7 +140,6 @@ export default {
           getFatherRouter().then((res) => {
             this.fatherNode = res.data;
             this.loadingFather = false;
-            console.log(this.form);
           });
           break;
       }
