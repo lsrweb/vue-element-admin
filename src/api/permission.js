@@ -83,9 +83,38 @@ export function getFatherRouter() {
 
 // 角色管理
 
+/**
+ * get Role list
+ * @returns {AxiosPromise}
+ */
 export function getRole() {
   return request({
     url: "/backend/role",
     method: "GET",
+  });
+}
+
+/**
+ * add Role
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function addRole(data) {
+  return request({
+    url: "/backend/role/add",
+    method: "POST",
+    data: data,
+  });
+}
+
+/**
+ * delete Role
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteRole(id) {
+  return request({
+    url: `/backend/role/delete?id=${id}`,
+    method: "DELETE",
   });
 }
