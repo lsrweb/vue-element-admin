@@ -131,3 +131,71 @@ export function changeRole(data) {
     data,
   });
 }
+
+/**
+ * get role router
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function getRoleRouter(id) {
+  return request({
+    url: `/backend/role/router?id=${id}`,
+    method: "GET",
+  });
+}
+
+/**
+ * reset role router
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function resetRouter(data, id) {
+  return request({
+    url: "/backend/role/reset/router",
+    method: "POST",
+    data: {
+      data: data,
+      id: id,
+    },
+  });
+}
+
+/**
+ * get simple router button permission
+ * @param roleId
+ * @param routerId
+ * @returns {AxiosPromise}
+ */
+export function getButtonPermission(roleId, routerId) {
+  return request({
+    url: `/backend/role/button?role=${roleId}&router=${routerId}`,
+    method: "GET",
+  });
+}
+
+/**
+ * change router permission
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function changeButtonPermission(data, router) {
+  return request({
+    url: "/backend/role/button/update",
+    method: "POST",
+    data: {
+      button: data,
+      id: router,
+    },
+  });
+}
+
+/**
+ * GET all admin
+ * @returns {AxiosPromise}
+ */
+export function getAllAdmin() {
+  return request({
+    url: "/backend/getAllAdmin",
+    method: "GET",
+  });
+}

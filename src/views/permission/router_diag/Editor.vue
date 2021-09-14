@@ -56,8 +56,13 @@
           <el-radio border label="false">否</el-radio>
         </el-radio-group>
       </el-form-item>
+      <el-form-item :label-width="formLabelWidth" :required="true" v-if="type == 'children'" label="节点对应角色">
+        <el-select v-model="roleId" default-first-option filterable placeholder="请选择角色" style="width: 300px">
+          <el-option v-for="(item, index) in role" :key="index" :label="item.role_name" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item :label-width="formLabelWidth" :required="true" v-if="type == 'children'" label="节点按钮权限">
-        <el-select v-model="button" allow-create default-first-option filterable multiple placeholder="请选择按钮权限标签" @change="changeButton" style="width: 300px">
+        <el-select v-model="button" allow-create default-first-option filterable multiple placeholder="请选择按钮权限标签" style="width: 300px">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
         </el-select>
       </el-form-item>
@@ -71,7 +76,7 @@
 
 <script>
 import SvgIcons from "@/icons/svg-icons";
-import { changeRouter, getFatherRouter, getRouterInfo } from "@/api/permission";
+import { changeRouter, getFatherRouter, getRouterInfo, getRole } from "@/api/permission";
 import { Message } from "element-ui";
 
 export default {
@@ -102,6 +107,7 @@ export default {
       // 获取父级节点
       fatherNode: [],
       button: [],
+      roleId: null,
       SvgIcons,
       // 默认按钮权限
       options: [
@@ -118,15 +124,21 @@ export default {
           label: "修改",
         },
       ],
+      role: [],
     };
   },
   methods: {
-    changeButton(e) {
-      console.log(e);
-    },
     radioChange(e) {
       if (e == "children") {
         this.form.pid = "";
+        this.loadingFather = false;
+        getFatherRouter().then((res) => {
+          this.fatherNode = res.data;
+          setTimeout(() => {
+            this.loadingFather = false;
+            this.loadEditor = false;
+          }, 500);
+        });
       } else {
         this.form.pid = 0;
       }
@@ -178,16 +190,17 @@ export default {
         } else {
           this.type = "children";
         }
+        this.loadEditor = false;
         this.form = response.data.routerInfo;
-        this.button = response.data.buttonPermission.split(",");
+        this.button = response.data.buttonPermission.permission.split(",");
+        this.roleId = response.data.buttonPermission.permissionName.role_name;
+        // this.role = response.data.buttonPermission;
+        this.form.roleId = response.data.buttonPermission.permissionName.id;
         this.loadingFather = false;
       });
-      await getFatherRouter().then((res) => {
-        this.fatherNode = res.data;
-        setTimeout(() => {
-          this.loadingFather = false;
-          this.loadEditor = false;
-        }, 500);
+
+      await getRole().then((res) => {
+        this.role = res.data;
       });
     },
   },

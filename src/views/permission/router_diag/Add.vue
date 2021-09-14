@@ -35,6 +35,11 @@
       <el-form-item :label-width="formLabelWidth" :required="true" label="节点标题">
         <el-input v-model="form.router_title" autocomplete="off" placeholder="用于显示后台左侧菜单文字"></el-input>
       </el-form-item>
+      <el-form-item :label-width="formLabelWidth" :required="true" label="对应角色">
+        <el-select v-model="form.role" default-first-option filterable placeholder="请选择对应角色">
+          <el-option v-for="item in optionsRole" :key="item.id" :label="item.role_name" :value="item.id"></el-option>
+        </el-select>
+      </el-form-item>
       <el-form-item :label-width="formLabelWidth" :required="true" label="节点按钮权限">
         <el-select v-model="form.page_button" allow-create default-first-option filterable multiple placeholder="请选择按钮权限标签">
           <el-option v-for="item in options" :key="item.value" :label="item.label" :value="item.value"></el-option>
@@ -68,7 +73,7 @@
 
 <script>
 import SvgIcons from "@/icons/svg-icons";
-import { addRouter, getFatherRouter } from "@/api/permission";
+import { addRouter, getFatherRouter, getRole } from "@/api/permission";
 import { Message } from "element-ui";
 
 export default {
@@ -108,6 +113,7 @@ export default {
           label: "修改",
         },
       ],
+      optionsRole: [],
       // 默认添加父级节点
       type: "father",
       // 节点添加
@@ -123,6 +129,7 @@ export default {
         router_alwaysShow: "false",
         router_affix: "false",
         page_button: "",
+        role: "",
       },
     };
   },
@@ -159,6 +166,7 @@ export default {
         router_alwaysShow: this.form.router_alwaysShow,
         router_affix: this.form.router_affix,
         page_button: this.form.page_button.join(","),
+        role: this.form.role,
       };
       addRouter({ data: form }).then((response) => {
         if (response.code == 200) {
@@ -190,6 +198,9 @@ export default {
   },
   mounted() {
     this.form.router_component = "Layout";
+    getRole().then((response) => {
+      this.optionsRole = response.data;
+    });
   },
 };
 </script>

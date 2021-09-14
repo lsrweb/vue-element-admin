@@ -415,3 +415,31 @@ export function buildTree(data, idName, parentIdName) {
   });
   return menu;
 }
+
+/**
+ * get tree
+ * @param list
+ * @returns {*[]}
+ */
+export function getTree(list) {
+  const tree = [];
+  const record = {};
+  for (let i = 0, len = list.length; i < len; i++) {
+    const item = list[i];
+    const id = item.id;
+    if (record[id]) {
+      item.children = record[id];
+    } else {
+      item.children = record[id] = [];
+    }
+    if (item.pid) {
+      if (!record[item.pid]) {
+        record[item.pid] = [];
+      }
+      record[item.pid].push(item);
+    } else {
+      tree.push(item);
+    }
+  }
+  return tree;
+}
