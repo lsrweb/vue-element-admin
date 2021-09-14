@@ -118,3 +118,16 @@ export function deleteRole(id) {
     method: "DELETE",
   });
 }
+
+/**
+ * change Role
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function changeRole(data) {
+  return request({
+    url: "/backend/role/update",
+    method: "POST",
+    data,
+  });
+}

@@ -21,7 +21,7 @@
         </el-table-column>
         <el-table-column fixed="right" label="操作" width="220">
           <template slot-scope="scope">
-            <el-button icon="el-icon-edit" plain size="mini" @click="[(showEditor = true), handleClick(scope.row)]" style="margin-right: 5px">编辑</el-button>
+            <el-button icon="el-icon-edit" plain size="mini" @click="[(showEditor = true), (getRow = scope.row)]" style="margin-right: 5px">编辑</el-button>
             <el-popconfirm cancel-button-text="取消" confirm-button-text="确认" icon="el-icon-info" icon-color="red" title="确认删除?" @confirm="deleteRouter(scope.row.id)">
               <el-button slot="reference" icon="el-icon-delete" plain size="mini" type="danger">删除</el-button>
             </el-popconfirm>
@@ -34,7 +34,7 @@
       <Add @changeAdd="changeAdd" title="角色添加" />
     </div>
     <div v-if="showEditor">
-      <Editor />
+      <Editor :form="getRow" @changeAdd="changeAdd" title="角色修改" />
     </div>
   </div>
 </template>
@@ -54,6 +54,7 @@ export default {
   data() {
     return {
       tableData: [],
+      getRow: [],
 
       tableLoad: true,
       showAdd: false,
@@ -70,17 +71,14 @@ export default {
       });
     },
 
-    changeAdd(chil) {
-      this.showAdd = chil;
+    // 弹窗关闭加载数据
+    changeAdd(val) {
+      this.showAdd = this.showEditor = val;
       this.fetchData();
-    },
-
-    // 编辑获取
-    handleClick(row) {
-      console.log(row);
     },
     // 获取角色数据
     async fetchData() {
+      this.tableLoad = true;
       await getRole().then((response) => {
         this.tableData = response.data;
 
