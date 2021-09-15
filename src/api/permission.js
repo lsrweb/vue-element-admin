@@ -189,13 +189,41 @@ export function changeButtonPermission(data, router) {
   });
 }
 
+// --------------------- 管理员
+
 /**
  * GET all admin
  * @returns {AxiosPromise}
  */
-export function getAllAdmin() {
+export function getAllAdmin(data) {
   return request({
     url: "/backend/getAllAdmin",
     method: "GET",
+    params: data,
+  });
+}
+
+/**
+ * delete admin account
+ * @param id
+ * @returns {AxiosPromise}
+ */
+export function deleteAdmin(id) {
+  return request({
+    url: `/backend/getAdmin/delete?id=${id}`,
+    method: "DELETE",
+  });
+}
+
+/**
+ * add admin account
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function addAdmin(data) {
+  return request({
+    url: "/backend/getAdmin/add",
+    method: "POST",
+    data,
   });
 }
