@@ -227,3 +227,29 @@ export function addAdmin(data) {
     data,
   });
 }
+
+/**
+ * editor admin account
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function editorAdmin(data) {
+  return request({
+    url: "/backend/getAdmin/update",
+    method: "POST",
+    data,
+  });
+}
+
+/**
+ * change password
+ * @param data
+ * @returns {AxiosPromise}
+ */
+export function changePassword(data) {
+  return request({
+    url: "/backend/getAdmin/password",
+    method: "POST",
+    data,
+  });
+}

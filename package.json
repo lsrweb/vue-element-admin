@@ -55,5 +55,9 @@
   },
   "eslintConfig": {
     "parser": "babel-eslint"
+  },
+  "setting" : {
+    "showMusic" : false,
+    "showFlower" : false
   }
 }

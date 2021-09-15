@@ -1,8 +1,9 @@
 "use strict";
 const path = require("path");
 const defaultSettings = require("./src/settings.js");
+const pack = require("./package.json");
 
-function resolve(dir){
+function resolve(dir) {
   return path.join(__dirname, dir);
 }
 
@@ -11,35 +12,41 @@ const name = defaultSettings.title || "VueElementAdmin";
 const port = process.env.port || process.env.npm_config_port || 9528;
 
 module.exports = {
-  publicPath:"/",
-  outputDir:"dist",
-  assetsDir:"static",
-  lintOnSave:process.env.NODE_ENV === "development",
-  productionSourceMap:false,
-  devServer:{
-    port:port,
-    open:true,
-    overlay:{
-      warnings:false,
-      errors:true
-    }
+  publicPath: "/",
+  outputDir: "dist",
+  assetsDir: "static",
+  lintOnSave: process.env.NODE_ENV === "development",
+  productionSourceMap: false,
+  devServer: {
+    port: port,
+    open: true,
+    overlay: {
+      warnings: false,
+      errors: true,
+    },
   },
-  configureWebpack:{
-    name:name,
-    resolve:{
-      alias:{
-        "@":resolve("src")
-      }
-    }
+  configureWebpack: {
+    name: name,
+    resolve: {
+      alias: {
+        "@": resolve("src"),
+      },
+    },
   },
-  chainWebpack(config){
+  chainWebpack(config) {
     config.plugin("preload").tap(() => [
       {
-        rel:"preload",
-        fileBlacklist:[/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
-        include:"initial"
-      }
+        rel: "preload",
+        fileBlacklist: [/\.map$/, /hot-update\.js$/, /runtime\..*\.js$/],
+        include: "initial",
+      },
     ]);
+    config.plugin("html").tap((args) => {
+      args[0].M = pack.setting.showMusic;
+      args[0].F = pack.setting.showFlower;
+
+      return args;
+    });
 
     config.plugins.delete("prefetch");
 
@@ -53,7 +60,7 @@ module.exports = {
       .use("svg-sprite-loader")
       .loader("svg-sprite-loader")
       .options({
-        symbolId:"icon-[name]"
+        symbolId: "icon-[name]",
       })
       .end();
 
@@ -63,34 +70,34 @@ module.exports = {
         .after("html")
         .use("script-ext-html-webpack-plugin", [
           {
-            inline:/runtime\..*\.js$/
-          }
+            inline: /runtime\..*\.js$/,
+          },
         ])
         .end();
       config.optimization.splitChunks({
-        chunks:"all",
-        cacheGroups:{
-          libs:{
-            name:"chunk-libs",
-            test:/[\\/]node_modules[\\/]/,
-            priority:10,
-            chunks:"initial"
+        chunks: "all",
+        cacheGroups: {
+          libs: {
+            name: "chunk-libs",
+            test: /[\\/]node_modules[\\/]/,
+            priority: 10,
+            chunks: "initial",
           },
-          elementUI:{
-            name:"chunk-elementUI",
-            priority:20,
-            test:/[\\/]node_modules[\\/]_?element-ui(.*)/
+          elementUI: {
+            name: "chunk-elementUI",
+            priority: 20,
+            test: /[\\/]node_modules[\\/]_?element-ui(.*)/,
           },
-          commons:{
-            name:"chunk-commons",
-            test:resolve("src/components"),
-            minChunks:3,
-            priority:5,
-            reuseExistingChunk:true
-          }
-        }
+          commons: {
+            name: "chunk-commons",
+            test: resolve("src/components"),
+            minChunks: 3,
+            priority: 5,
+            reuseExistingChunk: true,
+          },
+        },
       });
       config.optimization.runtimeChunk("single");
     });
-  }
+  },
 };

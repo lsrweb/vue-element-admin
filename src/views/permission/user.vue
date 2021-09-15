@@ -28,7 +28,7 @@
       </el-table-column>
       <el-table-column label="更新时间" prop="updated_router" width="220" align="center">
         <template slot-scope="scope">
-          {{ new Date(Number(scope.row.update)).toLocaleString() }}
+          {{ new Date(Number(scope.row.updated)).toLocaleString() }}
         </template>
       </el-table-column>
       <el-table-column align="center" fixed="right" label="操作" width="330">
@@ -37,6 +37,7 @@
           <el-popconfirm cancel-button-text="取消" confirm-button-text="确认" icon="el-icon-info" icon-color="red" title="确认删除?" @confirm="deleteAccount(scope.row.id)">
             <el-button slot="reference" icon="el-icon-delete" plain size="mini" type="danger" style="margin-left: 5px">删除</el-button>
           </el-popconfirm>
+          <el-button icon="el-icon-edit" plain size="mini" @click="[(changePassword = true), (password.id = scope.row.id)]">密码修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -46,13 +47,26 @@
       <Add title="添加管理员" v-if="showAdd" @changeAdd="changeAdd" />
     </div>
     <div class="editor">
-      <Editor title="修改管理员信息" v-if="showEditor" @changeAdd="changeAdd"></Editor>
+      <Editor title="修改管理员信息" v-if="showEditor" @changeAdd="changeAdd" :data="getRow"></Editor>
+    </div>
+    <div class="changePassword">
+      <el-dialog title="收货地址" :visible.sync="changePassword">
+        <el-form :model="password">
+          <el-form-item label="修改密码" :required="true" :label-width="formLabelWidth">
+            <el-input v-model="password.pas" auto-complete="off" show-password></el-input>
+          </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+          <el-button @click="changePassword = false">取 消</el-button>
+          <el-button type="primary" @click="confirmChangePassword">确 定</el-button>
+        </div>
+      </el-dialog>
     </div>
   </div>
 </template>
 
 <script>
-import { getAllAdmin, deleteAdmin } from "@/api/permission";
+import { getAllAdmin, deleteAdmin, changePassword } from "@/api/permission";
 import { Message } from "element-ui";
 import Add from "./user/Add";
 import Editor from "./user/Editor";
@@ -70,6 +84,8 @@ export default {
       loadTable: true,
       showAdd: false,
       showEditor: false,
+      changePassword: false,
+      formLabelWidth: "120px",
 
       total: 0,
       page: 1,
@@ -77,9 +93,23 @@ export default {
 
       env: process.env.VUE_APP_IMAGE_URL,
       tableData: [],
+      getRow: [],
+      password: {
+        pas: "",
+        id: "",
+      },
     };
   },
   methods: {
+    async confirmChangePassword() {
+      await changePassword(this.password).then((response) => {
+        if (response.code == 200) {
+          this.changePassword = false;
+          Message.success(response.message);
+        }
+      });
+    },
+    // 删除账号
     async deleteAccount(val) {
       this.loadTable = true;
       await deleteAdmin(val).then((response) => {
@@ -94,29 +124,42 @@ export default {
         }, 500);
       });
     },
-
+    // 获取数据
     async fetchData(e) {
       if (e) {
         this.limit = e.limit;
         this.page = e.page;
       }
-      await getAllAdmin({ page: this.page, limit: this.limit }).then((res) => {
-        this.tableData = res.data;
-        this.total = res.alltotal;
-
-        setTimeout(() => {
+      this.loadTable = true;
+      await getAllAdmin({ page: this.page, limit: this.limit })
+        .then((res) => {
+          if (e.type === "reload") {
+            this.tableData = [];
+            this.total = res.alltotal;
+            setTimeout(() => {
+              this.tableData = res.data;
+              this.loadTable = false;
+            }, 500);
+            return false;
+          }
+          this.tableData = res.data;
+          this.total = res.alltotal;
+          setTimeout(() => {
+            this.loadTable = false;
+          }, 500);
+        })
+        .catch(() => {
           this.loadTable = false;
-        }, 500);
-      });
+        });
     },
-
+    // 框框显示
     changeAdd(val) {
       this.showAdd = this.showEditor = val;
-      this.fetchData();
+      this.fetchData({ type: "reload" });
     },
   },
   mounted() {
-    this.fetchData();
+    this.fetchData({ type: "normal" });
   },
 };
 </script>
