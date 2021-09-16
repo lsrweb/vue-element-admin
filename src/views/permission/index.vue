@@ -40,8 +40,12 @@
     </div>
     <!--  权限编辑  -->
     <div class="permission">
-      <el-dialog :visible.sync="showPermission" title="修改路由权限">
-        <el-tree ref="tree" v-loading="loadingTree" element-loading-text="正在构建结构" :check-strictly="true" :data="tree" :default-checked-keys="checkArray" :expand-on-click-node="false" :props="defaultProps" :show-checkbox="true" accordion node-key="id" @check="clickDeal" />
+      <el-dialog :visible.sync="showPermission" title="修改路由权限" :close="closeClearTree">
+        <!--     方法2 树   -->
+        <!--        <el-tree ref="tree" v-loading="loadingTree" element-loading-text="正在构建结构" :check-strictly="true" :data="tree" :default-checked-keys="checkArray" :expand-on-click-node="false" :props="defaultProps" :show-checkbox="true" accordion node-key="id" @check="clickDeal" />-->
+
+        <!--     方法1 树  -->
+        <el-tree ref="tree" :props="defaultProps" v-loading="loadingTree" check-strictly element-loading-text="正在构建结构" show-checkbox :data="tree" accordion node-key="id" :default-checked-keys="checkArray"> </el-tree>
         <div slot="footer" class="dialog-footer">
           <el-button @click="showPermission = false">取 消</el-button>
           <el-button type="primary" @click="confirmChangeRole">确 定</el-button>
@@ -128,63 +132,87 @@ export default {
     };
   },
   methods: {
-    updated() {
-      // 给多选树设置默认值
-      this.$refs.tree.setCheckedKeys(this.checkArray);
-    },
-    clickDeal(currentObj, treeStatus) {
-      // 用于：父子节点严格互不关联时，父节点勾选变化时通知子节点同步变化，实现单向关联。
-      const selected = treeStatus.checkedKeys.indexOf(currentObj.id); // -1未选中
+    /// 自定义树形开始-------------
 
-      // 选中
-      if (selected !== -1) {
-        // 子节点只要被选中父节点就被选中
-        this.selectedParent(currentObj);
-        // 统一处理子节点为相同的勾选状态
-        this.uniteChildSame(currentObj, true);
-      } else {
-        // 未选中 处理子节点全部未选中
-        if (currentObj.children.length !== 0) {
-          this.uniteChildSame(currentObj, false);
-        }
-      }
-    },
+    // updated() {
+    //   // 给多选树设置默认值
+    //   this.$refs.tree.setCheckedKeys(this.checkArray);
+    // },
+    // clickDeal(currentObj, treeStatus) {
+    //   // 用于：父子节点严格互不关联时，父节点勾选变化时通知子节点同步变化，实现单向关联。
+    //   const selected = treeStatus.checkedKeys.indexOf(currentObj.id); // -1未选中
+    //
+    //   // 选中
+    //   if (selected !== -1) {
+    //     // 子节点只要被选中父节点就被选中
+    //     this.selectedParent(currentObj);
+    //     // 统一处理子节点为相同的勾选状态
+    //     this.uniteChildSame(currentObj, true);
+    //   } else {
+    //     // 未选中 处理子节点全部未选中
+    //     if (currentObj.children.length !== 0) {
+    //       this.uniteChildSame(currentObj, false);
+    //     }
+    //   }
+    // },
     // 统一处理子节点为相同的勾选状态
-    uniteChildSame(treeList, isSelected) {
-      this.$refs.tree.setChecked(treeList.id, isSelected);
-      for (let i = 0; i < treeList.children.length; i++) {
-        this.uniteChildSame(treeList.children[i], isSelected);
-      }
-    },
+    // uniteChildSame(treeList, isSelected) {
+    //   this.$refs.tree.setChecked(treeList.id, isSelected);
+    //   for (let i = 0; i < treeList.children.length; i++) {
+    //     this.uniteChildSame(treeList.children[i], isSelected);
+    //   }
+    // },
     // 统一处理父节点为选中
-    selectedParent(currentObj) {
-      let currentNode = this.$refs.tree.getNode(currentObj);
-      if (currentNode.parent.key !== undefined) {
-        this.$refs.tree.setChecked(currentNode.parent, true);
-        this.selectedParent(currentNode.parent);
-      }
-    },
+    // selectedParent(currentObj) {
+    //   let currentNode = this.$refs.tree.getNode(currentObj);
+    //   if (currentNode.parent.key !== undefined) {
+    //     this.$refs.tree.setChecked(currentNode.parent, true);
+    //     this.selectedParent(currentNode.parent);
+    //   }
+    // },
+    /// 自定义树形结构结束
     // 确认修改
     async confirmChangeRole() {
-      const nodeList = Array.from(new Set([...this.$refs.tree.getCheckedKeys(), ...this.$refs.tree.getHalfCheckedKeys()])).sort((a, b) => {
+      let nodeId = Array.from(new Set([...this.$refs.tree.getCheckedKeys(), ...this.$refs.tree.getHalfCheckedKeys()])).sort((a, b) => {
         return a - b;
       });
-      if (nodeList == "" || nodeList == []) {
+      if (nodeId == "" || nodeId == []) {
         Message.info("请选择对应权限");
         return false;
       }
-
-      await resetRouter(nodeList, this.id).then((response) => {
+      await resetRouter(nodeId, this.id).then((response) => {
         if (response.code == 200) {
           this.showPermission = false;
           Message.success(response.message);
         }
       });
+      // 方法 2
+      // 如要采用 2自定义方法,请 解除上法自定义方法
+      // const nodeList = Array.from(new Set([...this.$refs.tree.getCheckedKeys(), ...this.$refs.tree.getHalfCheckedKeys()])).sort((a, b) => {
+      //   return a - b;
+      // });
+      // // eslint-disable-next-line no-unreachable
+      // if (nodeList == "" || nodeList == []) {
+      //   Message.info("请选择对应权限");
+      //   return false;
+      // }
+      //
+      // await resetRouter(nodeList, this.id).then((response) => {
+      //   if (response.code == 200) {
+      //     this.showPermission = false;
+      //     Message.success(response.message);
+      //   }
+      // });
     },
+
+    // 关闭路由权限框后情空权限
+    closeClearTree() {
+      this.checkArray = [];
+    },
+
     async confirmChangeButton() {
       const button = this.button.join(",");
       await changeButtonPermission(button, this.routerId).then((response) => {
-        console.log(response);
         if (response.code == 200) {
           this.showButtonPer = false;
           Message.success(response.message);
@@ -236,21 +264,25 @@ export default {
     },
     // 获取路由
     async getRoleRouter(val) {
+      this.checkArray = [];
+      this.loadingTree = true;
       await getRoleRouter(val).then((response) => {
         if (response.code == 200) {
           this.tree = getTree(response.data);
           this.showPermission = true;
           response.data.forEach((val) => {
+            console.log(val.check);
             if (val.check) {
               this.checkArray.push(val.id);
             }
           });
-          setTimeout(() => {
-            this.updated();
-          }, 250);
+          // 方法2树形生成
+          // setTimeout(() => {
+          //   this.updated();
+          // }, 250);
           setTimeout(() => {
             this.loadingTree = false;
-          }, 500);
+          }, 1000);
           return;
         }
         Message.info(response.message);

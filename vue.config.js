@@ -1,7 +1,10 @@
 "use strict";
 const path = require("path");
 const defaultSettings = require("./src/settings.js");
+// eslint-disable-next-line no-unused-vars
 const pack = require("./package.json");
+// eslint-disable-next-line no-unused-vars
+const version = pack.version;
 
 function resolve(dir) {
   return path.join(__dirname, dir);
@@ -32,6 +35,10 @@ module.exports = {
         "@": resolve("src"),
       },
     },
+    devtool: "source-map",
+    performance: {
+      hints: false,
+    },
   },
   chainWebpack(config) {
     config.plugin("preload").tap(() => [
@@ -42,8 +49,8 @@ module.exports = {
       },
     ]);
     config.plugin("html").tap((args) => {
-      args[0].M = pack.setting.showMusic;
-      args[0].F = pack.setting.showFlower;
+      args[0].M = defaultSettings.showAplayer;
+      args[0].F = defaultSettings.showFlower;
 
       return args;
     });

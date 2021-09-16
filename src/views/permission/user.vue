@@ -37,7 +37,7 @@
           <el-popconfirm cancel-button-text="取消" confirm-button-text="确认" icon="el-icon-info" icon-color="red" title="确认删除?" @confirm="deleteAccount(scope.row.id)">
             <el-button slot="reference" icon="el-icon-delete" plain size="mini" type="danger" style="margin-left: 5px">删除</el-button>
           </el-popconfirm>
-          <el-button icon="el-icon-edit" plain size="mini" @click="[(changePassword = true), (password.id = scope.row.id)]">密码修改</el-button>
+          <el-button icon="el-icon-edit" plain size="mini" style="margin-left: 5px" @click="[(changePassword = true), (password.id = scope.row.id)]">密码修改</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -50,7 +50,7 @@
       <Editor title="修改管理员信息" v-if="showEditor" @changeAdd="changeAdd" :data="getRow"></Editor>
     </div>
     <div class="changePassword">
-      <el-dialog title="收货地址" :visible.sync="changePassword">
+      <el-dialog title="账号密码修改" :visible.sync="changePassword">
         <el-form :model="password">
           <el-form-item label="修改密码" :required="true" :label-width="formLabelWidth">
             <el-input v-model="password.pas" auto-complete="off" show-password></el-input>
@@ -114,8 +114,8 @@ export default {
       this.loadTable = true;
       await deleteAdmin(val).then((response) => {
         if (response.code == 200) {
-          this.fetchData();
           Message.success(response.message);
+          this.fetchData({ type: "reload" });
         } else {
           Message.success(response.message);
         }

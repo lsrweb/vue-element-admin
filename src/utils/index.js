@@ -1,3 +1,5 @@
+import { Message } from "element-ui";
+
 /**
  * Parse the time to string
  * @param {(Object|string|number)} time
@@ -289,9 +291,7 @@ export function debounce(func, wait, immediate) {
 }
 
 /**
- * This is just a simple version of deep copy
- * Has a lot of edge cases bug
- * If you want to use a perfect deep copy, use lodash's _.cloneDeep
+ * 深度克隆
  * @param {Object} source
  * @returns {Object}
  */
@@ -442,4 +442,19 @@ export function getTree(list) {
     }
   }
   return tree;
+}
+
+// const book = { account: "用户名", password: "密码", code: "验证码" };
+export function forInObjectIsEmpty(object, book) {
+  for (const i in object) {
+    if (object[i] == "") {
+      for (const key in book) {
+        if (i == key) {
+          Message.info(`${book[key]}`);
+          return false;
+        }
+      }
+    }
+  }
+  return true;
 }

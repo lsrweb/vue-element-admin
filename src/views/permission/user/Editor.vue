@@ -93,6 +93,7 @@ export default {
     },
   },
   mounted() {
+    console.log(this.form);
     getRole().then((response) => {
       this.role = response.data;
     });

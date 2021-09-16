@@ -11,11 +11,13 @@
         <el-input v-model="form.username" placeholder="请输入用户名"></el-input>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth" :required="true" label="用户头像">
-        <el-input v-model="form.avatar" placeholder="请输入用户名"></el-input>
+        <el-button type="primary" plain size="medium" icon="el-icon-upload" @click="showAvatar = true">{{ step == 1 ? "上传头像" : "重新修改" }}</el-button>
+        <Cropper :value="showAvatar" field="file" url="/backend/upload/image/global" @close="closeAvatar" @crop-upload-success="successUpload"></Cropper>
+        <el-avatar v-if="showHeader" :src="env + form.avatar" style="display: block; width: 150px; height: 150px; margin-top: 20px"></el-avatar>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth" :required="true" label="用户角色">
         <el-select v-model="form.role" placeholder="请选择用户角色" style="width: 300px">
-          <el-option v-for="item in role" :key="item.id" :label="item.role_name" :value="item.id"> </el-option>
+          <el-option v-for="item in role" :key="item.id" :label="item.role_name" :value="item.id"></el-option>
         </el-select>
       </el-form-item>
 
@@ -36,8 +38,13 @@
 <script>
 import { addAdmin, getRole } from "@/api/permission";
 import { Message } from "element-ui";
+import Cropper from "@/components/ImageCropper";
+import { forInObjectIsEmpty } from "@/utils";
 
 export default {
+  components: {
+    Cropper,
+  },
   name: "Add",
   props: {
     title: {
@@ -52,7 +59,12 @@ export default {
   },
   data() {
     return {
+      env: process.env.VUE_APP_IMAGE_URL,
+      step: 1,
+
       isShow: true,
+      showAvatar: false,
+      showHeader: false,
       formLabelWidth: "120px",
 
       // 节点添加
@@ -71,14 +83,26 @@ export default {
   methods: {
     // 确认添加
     confirmAdd() {
-      addAdmin({ data: this.form }).then((response) => {
-        if (response.code == 200) {
-          Message.success(response.message);
-          this.$emit("changeAdd", false);
-        }
-      });
+      const book = { account: "请输入账号", username: "请输入用户名", avatar: "请上传头像", role: "请选择管理员角色", password: "请输入用户密码" };
+      const isOk = forInObjectIsEmpty(this.form, book);
+      if (isOk) {
+        addAdmin({ data: this.form }).then((response) => {
+          if (response.code == 200) {
+            Message.success(response.message);
+            this.$emit("changeAdd", false);
+          }
+        });
+      }
     },
 
+    closeAvatar() {
+      this.showAvatar = false;
+    },
+    successUpload(val) {
+      this.step = 2;
+      this.form.avatar = val;
+      this.showHeader = true;
+    },
     // 关闭提示
     isClose() {
       this.$confirm("确认关闭该弹窗？", "提示", {

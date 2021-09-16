@@ -1,6 +1,6 @@
 import defaultSettings from "@/settings";
 import variables from "@/styles/element-variables.scss";
-const { showSettings, tagsView, fixedHeader, sidebarLogo, openDyRouter, breadIsLink, isTreeLoad, showAplayer, AplayerId, showLive } = defaultSettings;
+const { showSettings, tagsView, fixedHeader, sidebarLogo, openDyRouter, breadIsLink, isTreeLoad, showAplayer, AplayerId, showLive, slideBar } = defaultSettings;
 
 const state = {
   theme: variables.theme,
@@ -15,6 +15,7 @@ const state = {
   showAplayer: showAplayer,
   AplayerId: AplayerId,
   showLive: showLive,
+  slideBar: slideBar,
 };
 
 const mutations = {

@@ -16,9 +16,12 @@ module.exports = {
   breadIsLink: false,
   // 远端是否生成树状结构 true -> 接口已生成,无需本地转化  false  ->接口未生成,需要本地进行转化
   isTreeLoad: true,
+  // 侧栏手风琴模式开启
+  slideBar: true,
 
   //  是否生成Live2d  / 音乐播放器 / 樱花特效
   showLive: false,
   showAplayer: false,
   AplayerId: "7962349108",
+  showFlower: false,
 };
