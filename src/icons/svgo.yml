@@ -4,6 +4,7 @@
 # full: true
 
 plugins:
+
   # - name
   #
   # or:
@@ -17,5 +18,5 @@ plugins:
 
   - removeAttrs:
       attrs:
-        - "fill"
-        - "fill-rule"
+        - 'fill'
+        - 'fill-rule'
